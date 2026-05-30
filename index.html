@@ -1,1 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>Hope as a Skill — Workshop</title>
+  <meta name="description" content="A 3-hour interactive workshop on rebuilding motivation, meaning, and future confidence in uncertain times." />
 
+  <!-- Open Graph -->
+  <meta property="og:title" content="Hope as a Skill — Workshop" />
+  <meta property="og:description" content="Rebuilding Motivation, Meaning, and Future Confidence in Uncertain Times" />
+  <meta property="og:type" content="website" />
+
+  <!-- Fonts: Fraunces (display serif) + Geist (body) + JetBrains Mono (code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Geist:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- jsPDF: client-side PDF generation for the learning summary -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%237b8cf5'/%3E%3Cpath d='M30 70V30h10v15h20V30h10v40H60V55H40v15z' fill='%23ffffff'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- ============================================================
+       PASSWORD GATE — shown until participant enters access code
+       ============================================================ -->
+  <div class="password-gate" id="passwordGate" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+    <div class="pw-ambient pw-ambient-a" aria-hidden="true"></div>
+    <div class="pw-ambient pw-ambient-b" aria-hidden="true"></div>
+    <div class="password-card">
+      <div class="pw-brand-mark" aria-hidden="true"></div>
+      <div class="pw-kicker"><span class="dot"></span> <span data-i18n="pw.kicker">Restricted Workshop</span></div>
+      <h1 id="pwTitle" class="pw-title">
+        <span data-i18n="pw.title.a">Hope</span> <em data-i18n="pw.title.b">as a</em> <span data-i18n="pw.title.c">Skill</span>
+      </h1>
+      <p class="pw-sub" data-i18n="pw.sub">A 3-hour workshop by ProfessionalsTalk. Please enter the access code provided by your facilitator to begin.</p>
+      <form class="pw-form" id="passwordForm">
+        <label for="passwordInput" class="pw-label" data-i18n="pw.label">Access Code</label>
+        <div class="pw-input-wrap">
+          <input type="password" id="passwordInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type your access code" data-i18n-placeholder="pw.placeholder" />
+          <button type="button" class="pw-toggle" id="passwordToggle" aria-label="Show or hide password">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <button type="submit" class="btn-primary pw-submit" id="passwordSubmit">
+          <span class="btn-label" data-i18n="pw.enter">Enter Workshop</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="pw-error" id="passwordError" role="alert" aria-live="polite"></div>
+      </form>
+      <div class="pw-foot">
+        <span data-i18n="pw.issuedBy">Issued by</span>
+        <a href="https://www.professionalstalk.me" target="_blank" rel="noopener">ProfessionalsTalk</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       GRAIN OVERLAY (subtle texture for depth)
+       ============================================================ -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       MOBILE TOP BAR
+       ============================================================ -->
+  <header class="topbar" role="banner">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <span data-i18n="brand">HOPE Workshop</span>
+    </div>
+    <div class="topbar-right">
+      <button class="lang-toggle" id="langToggle" aria-label="Toggle language" title="Switch language">
+        <span class="lang-current" id="langCurrent">EN</span>
+        <span class="lang-sep">·</span>
+        <span class="lang-alt" id="langAlt">বাংলা</span>
+      </button>
+      <div class="topbar-progress">
+        <span id="progressText">1 / 19</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       SIDEBAR NAVIGATION
+       ============================================================ -->
+  <aside class="sidebar" id="sidebar" aria-label="Workshop navigation">
+    <div class="sidebar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <span class="brand-text">HOPE Workshop</span>
+      </div>
+
+      <nav class="nav-group" aria-label="Session flow">
+        <div class="nav-label" data-i18n="nav.sessionflow">Session Flow</div>
+        <ul>
+          <li><button class="nav-link" data-target="opening" data-i18n="nav.opening">Opening</button></li>
+          <li><button class="nav-link" data-target="science" data-i18n="nav.science">The Science of Hope</button></li>
+          <li><button class="nav-link" data-target="daily" data-i18n="nav.daily">Daily Hope Building</button></li>
+          <li><button class="nav-link" data-target="org" data-i18n="nav.org">Organizational Impact</button></li>
+          <li><button class="nav-link" data-target="action" data-i18n="nav.action">Action Planning</button></li>
+        </ul>
+      </nav>
+
+      <nav class="nav-group" aria-label="Frameworks">
+        <div class="nav-label" data-i18n="nav.frameworks">Frameworks</div>
+        <ul>
+          <li><button class="nav-link" data-target="snyder" data-i18n="s6.title">Snyder's Hope Theory</button></li>
+          <li><button class="nav-link" data-target="hope-model" data-i18n="nav.hopemodel">HOPE Action Model</button></li>
+          <li><button class="nav-link" data-target="hdps" data-i18n="nav.hdps">HDPS System</button></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="dur-line" data-i18n="nav.duration">3 Hours · 2026</div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span id="themeLabel" data-i18n="theme.light">Light Mode</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- backdrop for mobile -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ============================================================
+       MAIN SLIDE STAGE
+       ============================================================ -->
+  <main class="stage" id="stage" role="main">
+
+    <!-- ============== SLIDE 01 — TITLE ============== -->
+    <section class="slide slide-title active" data-slide="1" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker">
+          <span class="dot"></span> <span data-i18n="s1.kicker">Workshop Presentation</span>
+        </div>
+        <h1 class="hero-title reveal">
+          <span class="word">Hope</span>
+          <span class="word"><em>as</em></span>
+          <span class="word">a</span>
+          <span class="word">Skill</span>
+        </h1>
+        <p class="hero-sub reveal" style="--d:.3s" data-i18n="s1.sub">
+          Rebuilding Motivation, Meaning, and Future Confidence in Uncertain Times
+        </p>
+        <div class="code-pill reveal" style="--d:.5s">
+          <span class="code-key">SKILL</span>
+          <span class="code-val">/learned-psychological-capability</span>
+        </div>
+        <div class="title-meta reveal" style="--d:.7s">
+          <div><span class="meta-k" data-i18n="s1.metak.duration">Duration</span><span class="meta-v" data-i18n="s1.metav.duration">3 Hours</span></div>
+          <div><span class="meta-k" data-i18n="s1.metak.format">Format</span><span class="meta-v" data-i18n="s1.metav.format">Live · Interactive</span></div>
+          <div><span class="meta-k" data-i18n="s1.metak.year">Year</span><span class="meta-v">2026</span></div>
+        </div>
+        <div class="scroll-hint reveal" style="--d:.9s">
+          <span data-i18n="s1.scrollhint">Press → or scroll to begin</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+      <div class="ambient-blob blob-a" aria-hidden="true"></div>
+      <div class="ambient-blob blob-b" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============== SLIDE 02 — OBJECTIVES ============== -->
+    <section class="slide" data-slide="2" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s2.kicker">Workshop Overview</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s2.title">Workshop Objectives</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s2.lede">
+          By the end of this 3-hour session, participants will have developed practical tools to transform hope from a fleeting feeling into a daily practice.
+        </p>
+        <div class="obj-grid">
+          <div class="obj-card c-blue reveal" style="--d:.25s">
+            <div class="obj-num">1</div>
+            <h3 data-i18n="s2.c1.h">Understand Hope</h3>
+            <p data-i18n="s2.c1.p">Learn hope as a psychological skill, not just an emotion that comes and goes.</p>
+          </div>
+          <div class="obj-card c-green reveal" style="--d:.35s">
+            <div class="obj-num">2</div>
+            <h3 data-i18n="s2.c2.h">Build Through Action</h3>
+            <p data-i18n="s2.c2.p">Discover how hope is constructed through daily actions, not luck or circumstance.</p>
+          </div>
+          <div class="obj-card c-amber reveal" style="--d:.45s">
+            <div class="obj-num">3</div>
+            <h3 data-i18n="s2.c3.h">Rebuild Motivation</h3>
+            <p data-i18n="s2.c3.p">Develop personal tools to reignite motivation during uncertainty and pressure.</p>
+          </div>
+          <div class="obj-card c-coral reveal" style="--d:.55s">
+            <div class="obj-num">4</div>
+            <h3 data-i18n="s2.c4.h">Create an Action Plan</h3>
+            <p data-i18n="s2.c4.p">Leave with a concrete Personal Hope Action Plan for immediate implementation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 03 — WHY HOPE MATTERS ============== -->
+    <section class="slide" data-slide="3" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s3.kicker">Session 1 — Opening</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s3.title">Why Hope Matters Today</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s3.lede">
+          In a world of constant uncertainty, professionals feel stuck and mentally overloaded. Hope is not passive thinking — it is a learned psychological capability.
+        </p>
+        <div class="big-stat-list">
+          <div class="big-row c-coral reveal" style="--d:.25s">
+            <div class="big-num">01</div>
+            <div class="big-body">
+              <h3 data-i18n="s3.r1.h">Feeling Stuck</h3>
+              <p data-i18n="s3.r1.p">Professionals feel mentally blocked by uncertainty, pressure, and burnout.</p>
+            </div>
+          </div>
+          <div class="big-row c-amber reveal" style="--d:.4s">
+            <div class="big-num">02</div>
+            <div class="big-body">
+              <h3 data-i18n="s3.r2.h">Impact of Uncertainty</h3>
+              <p data-i18n="s3.r2.p">Rapid change and ambiguity drain motivation and erode confidence over time.</p>
+            </div>
+          </div>
+          <div class="big-row c-green reveal" style="--d:.55s">
+            <div class="big-num">03</div>
+            <div class="big-body">
+              <h3 data-i18n="s3.r3.h">The Burnout Cycle</h3>
+              <p data-i18n="s3.r3.p">Without hope, exhaustion becomes a self-reinforcing loop that deepens over time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 04 — HOPE CHECK-IN (ACTIVITY) ============== -->
+    <section class="slide slide-activity" data-slide="4" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s4.kicker">Activity — Session 1</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s4.title">Hope Check-In Exercise</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s4.lede">
+          Take a moment to reflect on your current state. These questions help surface what is blocking your hope right now. Your answers are saved locally on your device.
+        </p>
+        <div class="q-stack">
+          <div class="q-card c-blue reveal" style="--d:.25s">
+            <div class="q-head"><span class="q-label" data-i18n="s4.q1.label">Question 1</span></div>
+            <label for="q_uncertain" class="q-question" data-i18n="s4.q1.q">What currently feels uncertain in my life or career?</label>
+            <textarea id="q_uncertain" data-key="q_uncertain" rows="4" placeholder="Take a breath. Write what comes to mind."></textarea>
+            <div class="q-meta"><span class="save-state" data-for="q_uncertain" data-i18n="s4.saved">Saved automatically</span></div>
+          </div>
+          <div class="q-card c-green reveal" style="--d:.4s">
+            <div class="q-head"><span class="q-label" data-i18n="s4.q2.label">Question 2</span></div>
+            <label for="q_blocked" class="q-question" data-i18n="s4.q2.q">Where do I feel mentally blocked or stuck right now?</label>
+            <textarea id="q_blocked" data-key="q_blocked" rows="4" placeholder="No need to fix anything yet. Just name it."></textarea>
+            <div class="q-meta"><span class="save-state" data-for="q_blocked">Saved automatically</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 05 — OPTIMISM VS HOPE ============== -->
+        <!-- ============== CINEMATIC SLIDE A — THE STORY ============== -->
+    <section class="slide slide-cinematic" data-slide="5" data-section="opening">
+      <div class="slide-inner">
+        <div class="cin-kicker reveal" data-i18n="c1.kicker">Scene 1 · A True-to-Life Story</div>
+        <h2 class="cin-headline reveal" style="--d:.18s">
+          <span data-i18n="c1.head1">Two employees.</span><br>
+          <em data-i18n="c1.head2">Same Tuesday.</em><br>
+          <span class="accent" data-i18n="c1.head3">Same layoff letter.</span>
+        </h2>
+        <p class="cin-sub reveal" style="--d:.34s" data-i18n="c1.sub">The crisis was identical. Six weeks later, their lives were not.</p>
+        <div class="story-pair">
+          <div class="story-pair-card reveal" style="--d:.5s" data-mood="dark">
+            <div class="story-label" data-i18n="c1.a.label">Mr. A</div>
+            <h3 class="story-name" data-i18n="c1.a.label">Mr. A</h3>
+            <div class="story-tag" data-i18n="c1.a.tag">Six weeks on</div>
+            <ul class="story-beats">
+              <li data-i18n="c1.a.b1">Stopped applying. "Why bother?"</li>
+              <li data-i18n="c1.a.b2">Withdrew from family conversations.</li>
+              <li data-i18n="c1.a.b3">Slept badly. Lost confidence.</li>
+              <li data-i18n="c1.a.b4">Saw no path forward.</li>
+            </ul>
+          </div>
+          <div class="story-pair-card reveal" style="--d:.66s" data-mood="light">
+            <div class="story-label" data-i18n="c1.b.label">Ms. B</div>
+            <h3 class="story-name" data-i18n="c1.b.label">Ms. B</h3>
+            <div class="story-tag" data-i18n="c1.b.tag">Six weeks on</div>
+            <ul class="story-beats">
+              <li data-i18n="c1.b.b1">Listed 3 goals on paper.</li>
+              <li data-i18n="c1.b.b2">Took one short online course.</li>
+              <li data-i18n="c1.b.b3">Called 5 old colleagues a week.</li>
+              <li data-i18n="c1.b.b4">Reached an offer in week six.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="cin-finishing-line reveal" style="--d:.85s" data-i18n="c1.close">Same crisis. Different hope skill.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="6" data-section="science">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s5.kicker">Core Concept</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s5.title">Optimism <em>vs</em> Hope</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s5.lede">
+          These two concepts are often confused, but they operate very differently. Understanding the distinction is the foundation of this workshop.
+        </p>
+        <div class="compare-grid">
+          <div class="compare-card c-amber reveal" style="--d:.25s">
+            <div class="compare-label" data-i18n="s5.opt.label">Optimism</div>
+            <h3 data-i18n="s5.opt.h">Thinking good things will happen</h3>
+            <p data-i18n="s5.opt.p">A general positive expectation about the future. It is <strong>passive</strong> — a belief that things will work out without necessarily planning how.</p>
+            <div class="tag-row">
+              <span class="tag">passive</span>
+              <span class="tag">feeling</span>
+              <span class="tag">expectation</span>
+            </div>
+          </div>
+          <div class="compare-card c-green reveal" style="--d:.4s">
+            <div class="compare-label">Hope</div>
+            <h3 data-i18n="s5.hope.h">Taking action toward meaningful goals</h3>
+            <p data-i18n="s5.hope.p">A learned capability that combines clear goals, multiple pathways, and the belief that you can act. Hope is <strong>active and strategic</strong>.</p>
+            <div class="tag-row">
+              <span class="tag">active</span>
+              <span class="tag">skill</span>
+              <span class="tag">strategy</span>
+            </div>
+          </div>
+        </div>
+        <div class="takeaway reveal" style="--d:.55s">
+          <div class="takeaway-bar"></div>
+          <div>
+            <h4 data-i18n="s5.take.h">Key Takeaway</h4>
+            <p data-i18n="s5.take.p">Optimism is a feeling. Hope is a skill you can build, measure, and improve through daily practice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 06 — SNYDER'S HOPE THEORY ============== -->
+    <section class="slide" data-slide="7" data-section="snyder">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s6.kicker">Core Model — Session 2</span></div>
+        <h2 class="slide-title-h2 reveal">Snyder's Hope Theory</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s6.lede">
+          Dr. Charles Snyder's research defines hope as the interaction of three components. When any one is missing, hope collapses.
+        </p>
+        <div class="code-pill reveal" style="--d:.25s">
+          <span class="code-key">FORMULA</span>
+          <span class="code-val">Hope = Goals + Pathways + Agency</span>
+        </div>
+        <div class="gpa-grid">
+          <div class="gpa-card c-blue reveal" style="--d:.35s">
+            <div class="gpa-letter">G</div>
+            <h3 data-i18n="s6.g.h">Goals</h3>
+            <p class="gpa-tag" data-i18n="s6.g.tag">Where I want to go</p>
+            <p class="gpa-body" data-i18n="s6.g.body">Clear, meaningful objectives that give direction and purpose to my efforts.</p>
+          </div>
+          <div class="gpa-card c-green reveal" style="--d:.45s">
+            <div class="gpa-letter">P</div>
+            <h3 data-i18n="s6.p.h">Pathways</h3>
+            <p class="gpa-tag" data-i18n="s6.p.tag">How I can get there</p>
+            <p class="gpa-body" data-i18n="s6.p.body">Multiple routes and strategies to overcome obstacles and reach my goals.</p>
+          </div>
+          <div class="gpa-card c-amber reveal" style="--d:.55s">
+            <div class="gpa-letter">A</div>
+            <h3 data-i18n="s6.a.h">Agency</h3>
+            <p class="gpa-tag" data-i18n="s6.a.tag">Belief I can do it</p>
+            <p class="gpa-body" data-i18n="s6.a.body">The internal fuel and confidence that drives sustained effort over time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 07 — MY HOPE MAP (ACTIVITY) ============== -->
+    <section class="slide slide-activity" data-slide="8" data-section="snyder">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s7.kicker">Activity — Session 2</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s7.title">My Hope Map</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s7.lede">
+          Apply Snyder's theory to your own life. Map one meaningful goal using the three-component framework.
+        </p>
+
+        <div class="map-step reveal" style="--d:.25s">
+          <div class="step-num c-blue">1</div>
+          <div class="step-body">
+            <h3 data-i18n="s7.s1.h">Define One Personal Career Goal</h3>
+            <p class="step-sub" data-i18n="s7.s1.sub">What is one meaningful goal you want to achieve in the next 6 months?</p>
+            <div class="code-input">
+              <span class="code-prefix">GOAL =</span>
+              <input type="text" data-key="map_goal" placeholder="One concrete, meaningful goal" />
+            </div>
+          </div>
+        </div>
+
+        <div class="map-step reveal" style="--d:.4s">
+          <div class="step-num c-green">2</div>
+          <div class="step-body">
+            <h3 data-i18n="s7.s2.h">Identify Two Possible Pathways</h3>
+            <p class="step-sub" data-i18n="s7.s2.sub">What are two different ways you could realistically reach this goal?</p>
+            <div class="path-grid">
+              <div class="code-input">
+                <span class="code-prefix">PATHWAY_A =</span>
+                <input type="text" data-key="map_path_a" placeholder="First route forward" />
+              </div>
+              <div class="code-input">
+                <span class="code-prefix">PATHWAY_B =</span>
+                <input type="text" data-key="map_path_b" placeholder="Alternative route" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-step reveal" style="--d:.55s">
+          <div class="step-num c-amber">3</div>
+          <div class="step-body">
+            <h3 data-i18n="s7.s3.h">Commit to One Action This Week</h3>
+            <p class="step-sub" data-i18n="s7.s3.sub">What is the single smallest action you can start within 7 days?</p>
+            <div class="code-input">
+              <span class="code-prefix">ACTION =</span>
+              <input type="text" data-key="map_action" placeholder="Tiny, specific, scheduled" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 08 — FOUR HOPE-BUILDING HABITS ============== -->
+    <section class="slide" data-slide="9" data-section="daily">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s8.kicker">Session 3 — Daily Practice</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s8.title">Four Hope-Building Habits</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s8.lede">
+          Hope is not built in one grand moment. It grows through small, repeated daily practices that compound over time.
+        </p>
+        <div class="habit-grid">
+          <div class="habit-card c-blue reveal" style="--d:.25s">
+            <div class="habit-label" data-i18n="s8.h1.label">Habit 1</div>
+            <h3 data-i18n="s8.h1.h">Notice Small Positive Moments</h3>
+            <p data-i18n="s8.h1.p">A meaningful conversation, a learning moment, a small achievement. Train your attention to catch what is working.</p>
+          </div>
+          <div class="habit-card c-green reveal" style="--d:.35s">
+            <div class="habit-label" data-i18n="s8.h2.label">Habit 2</div>
+            <h3 data-i18n="s8.h2.h">Self-Dialogue Practice</h3>
+            <p data-i18n="s8.h2.p">Replace <span class="inline-code">"I can't"</span> with <span class="inline-code">"I am learning how."</span> Your internal narrative shapes your capacity to persist.</p>
+          </div>
+          <div class="habit-card c-amber reveal" style="--d:.45s">
+            <div class="habit-label" data-i18n="s8.h3.label">Habit 3</div>
+            <h3 data-i18n="s8.h3.h">Action First Principle</h3>
+            <p data-i18n="s8.h3.p">Motivation comes <em>after</em> action, not before. Start small. The feeling follows the behavior.</p>
+          </div>
+          <div class="habit-card c-coral reveal" style="--d:.55s">
+            <div class="habit-label" data-i18n="s8.h4.label">Habit 4</div>
+            <h3 data-i18n="s8.h4.h">Meaning Reconnection</h3>
+            <p data-i18n="s8.h4.p">Ask yourself: <em>"Why does my work matter?"</em> Reconnecting to purpose restores energy during difficult periods.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 09 — REFRAMING EXERCISE (ACTIVITY) ============== -->
+    <section class="slide slide-activity" data-slide="10" data-section="daily">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s9.kicker">Activity — Session 3</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s9.title">Reframing Exercise</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s9.lede">
+          Turn 3 negative thoughts into hopeful action statements. The words you use shape the actions you take.
+        </p>
+        <div class="reframe-list">
+          <div class="reframe-row reveal" style="--d:.25s">
+            <div class="reframe-cell c-coral">
+              <div class="cell-label" data-i18n="s9.neg">Negative Thought</div>
+              <input type="text" data-key="reframe_neg_1" value='"I will never get promoted."' />
+            </div>
+            <div class="reframe-arrow" aria-hidden="true">→</div>
+            <div class="reframe-cell c-green">
+              <div class="cell-label" data-i18n="s9.pos">Hopeful Reframe</div>
+              <input type="text" data-key="reframe_pos_1" placeholder="Write your hopeful reframe" value='"I am building skills that will open new opportunities."' />
+            </div>
+          </div>
+          <div class="reframe-row reveal" style="--d:.4s">
+            <div class="reframe-cell c-coral">
+              <div class="cell-label">Negative Thought</div>
+              <input type="text" data-key="reframe_neg_2" value='"This project is too big for me."' />
+            </div>
+            <div class="reframe-arrow" aria-hidden="true">→</div>
+            <div class="reframe-cell c-green">
+              <div class="cell-label">Hopeful Reframe</div>
+              <input type="text" data-key="reframe_pos_2" placeholder="Write your hopeful reframe" value='"I will break this into steps and learn as I go."' />
+            </div>
+          </div>
+          <div class="reframe-row reveal" style="--d:.55s">
+            <div class="reframe-cell c-coral">
+              <div class="cell-label">Negative Thought</div>
+              <input type="text" data-key="reframe_neg_3" value='"I am falling behind everyone else."' />
+            </div>
+            <div class="reframe-arrow" aria-hidden="true">→</div>
+            <div class="reframe-cell c-green">
+              <div class="cell-label">Hopeful Reframe</div>
+              <input type="text" data-key="reframe_pos_3" placeholder="Write your hopeful reframe" value='"My path is unique and I am making progress on my own timeline."' />
+            </div>
+          </div>
+        </div>
+        <p class="reframe-hint reveal" style="--d:.7s" data-i18n="s9.hint">
+          Tip: Edit any field above. Reframes are starter examples — replace with what feels true to you.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 10 — BREAK ============== -->
+    <section class="slide slide-break" data-slide="11" data-section="daily">
+      <div class="slide-inner break-inner">
+        <div class="break-circle">
+          <div class="break-timer" id="breakTimer">15:00</div>
+          <svg class="break-ring" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="92" stroke="rgba(255,255,255,.08)" stroke-width="3" fill="none" />
+            <circle id="breakRingFill" cx="100" cy="100" r="92" stroke="var(--accent-blue)" stroke-width="3" fill="none"
+              stroke-dasharray="578" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 100 100)" />
+          </svg>
+        </div>
+        <h2 class="break-title reveal" data-i18n="s10.title">Break</h2>
+        <p class="break-sub reveal" style="--d:.2s">
+          <span data-i18n="s10.sub">Take 15 minutes to reflect, stretch, and recharge.<br>The next session will move from thinking to doing.</span>
+        </p>
+        <div class="break-controls reveal" style="--d:.35s">
+          <button class="btn-ghost" id="breakStart" data-i18n="s10.start">Start Timer</button>
+          <button class="btn-ghost" id="breakReset" data-i18n="s10.reset">Reset</button>
+        </div>
+        <div class="break-meta reveal" style="--d:.5s">
+          <div><span class="meta-k" data-i18n="s10.completed">Completed</span><span class="meta-v c-blue-t" data-i18n="s10.completedv">Sessions 1–3</span></div>
+          <div><span class="meta-k" data-i18n="s10.next">Up Next</span><span class="meta-v c-green-t" data-i18n="s10.nextv">Hope in Action</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CINEMATIC SLIDE B — THE PAUSE ============== -->
+    <section class="slide slide-pause" data-slide="12" data-section="opening">
+      <div class="slide-inner">
+        <div class="pause-kicker reveal" data-i18n="c2.kicker">Pause · 60 Seconds</div>
+        <h2 class="pause-headline reveal" style="--d:.22s" data-i18n="c2.head">Close your eyes.</h2>
+        <p class="pause-prompt reveal" style="--d:.38s" data-i18n="c2.prompt">Think of one moment you almost gave up — and didn't. What kept you going?</p>
+        <div class="breathing-orb reveal" style="--d:.55s" aria-hidden="true">
+          <div class="breathing-orb-core"></div>
+        </div>
+        <div class="pause-counter reveal" style="--d:.72s" data-i18n="c2.counter">Breathe in… and out. <strong>Sixty seconds</strong> of stillness.</div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 1 — WHEN HOPE DECLINES ============== -->
+    <section class="slide" data-slide="13" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o1.kicker">Organizational Perspective</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o1.title">When Hope Declines</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o1.sub">The hidden cost to employee health, wellbeing, and organizational performance.</p>
+        <div class="takeaway reveal" style="--d:.3s">
+          <div class="takeaway-bar"></div>
+          <div>
+            <h4 data-i18n="o1.q.h">The Core Question</h4>
+            <p data-i18n="o1.q.p">What happens when employees stop believing that improvement, growth, or a better future is possible?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 2 — PUT YOUR ANSWER (ACTIVITY) ============== -->
+    <section class="slide slide-activity" data-slide="14" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="o2.kicker">Activity — Reflect &amp; Share</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o2.title">Put Your Answer</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o2.lede">Write your response to the question below. Your answer is saved and shared with the facilitator when you submit at the end.</p>
+        <div class="q-stack">
+          <div class="q-card c-blue reveal" style="--d:.25s">
+            <label for="org_decline_answer" class="q-question" data-i18n="o2.q">What happens when employees stop believing a better future is possible?</label>
+            <textarea id="org_decline_answer" data-key="org_decline_answer" rows="5" placeholder="Write your thoughts here…"></textarea>
+            <div class="q-meta"><span class="save-state" data-for="org_decline_answer" data-i18n="s4.saved">Saved automatically</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 3 — HOPE IS NOT JUST POSITIVE THINKING ============== -->
+    <section class="slide" data-slide="15" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o3.kicker">The Science</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o3.title">Hope Is Not Just Positive Thinking</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o3.lede">In psychology, hope is tied to measurable capacities. When it fades, specific risks rise.</p>
+        <div class="compare-grid">
+          <div class="compare-card c-green reveal" style="--d:.25s">
+            <div class="compare-label" data-i18n="o3.hi.label">Hope relates to</div>
+            <ul class="org-list">
+              <li data-i18n="o3.hi.1">Future orientation</li>
+              <li data-i18n="o3.hi.2">Goal pursuit</li>
+              <li data-i18n="o3.hi.3">Coping capacity</li>
+              <li data-i18n="o3.hi.4">Perceived control</li>
+              <li data-i18n="o3.hi.5">Motivation</li>
+            </ul>
+          </div>
+          <div class="compare-card c-coral reveal" style="--d:.4s">
+            <div class="compare-label" data-i18n="o3.lo.label">Low hope relates to</div>
+            <ul class="org-list">
+              <li data-i18n="o3.lo.1">Chronic stress</li>
+              <li data-i18n="o3.lo.2">Uncertainty</li>
+              <li data-i18n="o3.lo.3">Blocked goals</li>
+              <li data-i18n="o3.lo.4">Low control</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 4 — RISK CHAIN (ACTIVITY: CHOOSE 3) ============== -->
+    <section class="slide slide-activity" data-slide="16" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="o4.kicker">Activity — Choose Top 3</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o4.title">The Invisible Workplace Risk Chain</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o4.lede">Low hope sets off a chain reaction. Which stages do you see most often in workplaces? Choose your top 3 — your selections are saved.</p>
+        <div class="risk-chain reveal" style="--d:.22s" id="riskChain">
+          <span class="risk-step" data-value="Low Hope" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n1">Low Hope</span><span class="risk-arrow">→</span>
+          <span class="risk-step" data-value="Low Future Confidence" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n2">Low Future Confidence</span><span class="risk-arrow">→</span>
+          <span class="risk-step" data-value="Chronic Stress Load" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n3">Chronic Stress Load</span><span class="risk-arrow">→</span>
+          <span class="risk-step" data-value="Mental Fatigue" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n4">Mental Fatigue</span><span class="risk-arrow">→</span>
+          <span class="risk-step" data-value="Behavior Change" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n5">Behavior Change</span><span class="risk-arrow">→</span>
+          <span class="risk-step" data-value="Performance Problems" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n6">Performance Problems</span><span class="risk-arrow">→</span>
+          <span class="risk-step" data-value="Organizational Health Challenges" role="button" tabindex="0" aria-pressed="false" data-i18n="o4.n7">Organizational Health Challenges</span>
+        </div>
+        <div class="chip-counter reveal" style="--d:.3s"><span id="riskChainCount">0</span> / 3 — <span data-i18n="o4.pick">Tap up to 3 stages above</span></div>
+        <div class="risk-selected-wrap reveal" style="--d:.4s">
+          <div class="risk-selected-label" data-i18n="o4.your">Your Top 3 Selections</div>
+          <div class="risk-selected" id="riskSelected">
+            <span class="risk-selected-empty" data-i18n="o4.empty">Tap stages in the chain above to add them here.</span>
+          </div>
+        </div>
+        <input type="hidden" data-key="org_risk_chain_top3" id="org_risk_chain_top3" value="" />
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 5 — MENTAL HEALTH ============== -->
+    <section class="slide" data-slide="17" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o5.kicker">Health Impact</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o5.title">Impact on Mental Health</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o5.lede">When hope weakens psychologically, these symptoms tend to emerge:</p>
+        <div class="org-grid reveal" style="--d:.25s">
+          <div class="org-chip-static" data-i18n="o5.1">Emotional exhaustion</div>
+          <div class="org-chip-static" data-i18n="o5.2">Anxiety symptoms</div>
+          <div class="org-chip-static" data-i18n="o5.3">Reduced motivation</div>
+          <div class="org-chip-static" data-i18n="o5.4">Helplessness thinking</div>
+          <div class="org-chip-static" data-i18n="o5.5">Lower resilience</div>
+          <div class="org-chip-static" data-i18n="o5.6">Burnout vulnerability</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 6 — PHYSICAL HEALTH ============== -->
+    <section class="slide" data-slide="18" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o6.kicker">Health Impact</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o6.title">Impact on Physical Health</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o6.lede">Is hope only emotional? It influences the body too — through real physiological systems.</p>
+        <div class="compare-grid">
+          <div class="compare-card c-amber reveal" style="--d:.25s">
+            <div class="compare-label" data-i18n="o6.sym.label">Common physical symptoms</div>
+            <ul class="org-list">
+              <li data-i18n="o6.s.1">Poor sleep quality</li>
+              <li data-i18n="o6.s.2">Fatigue</li>
+              <li data-i18n="o6.s.3">Muscle tension</li>
+              <li data-i18n="o6.s.4">Headaches</li>
+              <li data-i18n="o6.s.5">Digestive discomfort</li>
+              <li data-i18n="o6.s.6">Concentration difficulty</li>
+              <li data-i18n="o6.s.7">Reduced recovery capacity</li>
+            </ul>
+          </div>
+          <div class="compare-card c-coral reveal" style="--d:.4s">
+            <div class="compare-label" data-i18n="o6.sys.label">Physiological systems affected</div>
+            <ul class="org-list">
+              <li data-i18n="o6.y.1">Cortisol regulation</li>
+              <li data-i18n="o6.y.2">Sleep systems</li>
+              <li data-i18n="o6.y.3">Cardiovascular strain</li>
+              <li data-i18n="o6.y.4">Immune functioning</li>
+              <li data-i18n="o6.y.5">Energy regulation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 7 — EMPLOYEE WELLBEING ============== -->
+    <section class="slide" data-slide="19" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o7.kicker">People Impact</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o7.title">Employee Wellbeing Impact</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o7.lede">Without hope, employees can lose three things that keep them engaged:</p>
+        <div class="big-stat-list">
+          <div class="big-row c-blue reveal" style="--d:.25s">
+            <div class="big-num">01</div>
+            <div class="big-body">
+              <h3 data-i18n="o7.d.h">Direction</h3>
+              <p class="org-quote" data-i18n="o7.d.q">“I don't know where I'm going.”</p>
+            </div>
+          </div>
+          <div class="big-row c-amber reveal" style="--d:.38s">
+            <div class="big-num">02</div>
+            <div class="big-body">
+              <h3 data-i18n="o7.m.h">Meaning</h3>
+              <p class="org-quote" data-i18n="o7.m.q">“My work feels empty.”</p>
+            </div>
+          </div>
+          <div class="big-row c-coral reveal" style="--d:.5s">
+            <div class="big-num">03</div>
+            <div class="big-body">
+              <h3 data-i18n="o7.a.h">Agency</h3>
+              <p class="org-quote" data-i18n="o7.a.q">“Nothing I do matters.”</p>
+            </div>
+          </div>
+        </div>
+        <div class="takeaway reveal" style="--d:.62s">
+          <div class="takeaway-bar"></div>
+          <div>
+            <h4 data-i18n="o7.out.label">Possible behavioral outcomes</h4>
+            <div class="tag-row">
+              <span class="tag" data-i18n="o7.o1">Presenteeism</span>
+              <span class="tag" data-i18n="o7.o2">Reduced learning</span>
+              <span class="tag" data-i18n="o7.o3">Low initiative</span>
+              <span class="tag" data-i18n="o7.o4">Emotional withdrawal</span>
+              <span class="tag" data-i18n="o7.o5">Reduced creativity</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 8 — ORG HEALTH COST ============== -->
+    <section class="slide" data-slide="20" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o8.kicker">Business Impact</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o8.title">Organizational Health Cost</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o8.lede">Low workplace hope quietly drives up cost and risk across the whole organization.</p>
+        <div class="obj-grid">
+          <div class="obj-card c-coral reveal" style="--d:.22s">
+            <div class="obj-num">1</div>
+            <h3 data-i18n="o8.c1.h">Productivity Risk</h3>
+            <p data-i18n="o8.c1.p">Slower execution, low ownership, reduced adaptability.</p>
+          </div>
+          <div class="obj-card c-amber reveal" style="--d:.3s">
+            <div class="obj-num">2</div>
+            <h3 data-i18n="o8.c2.h">Burnout Risk</h3>
+            <p data-i18n="o8.c2.p">Emotional exhaustion and declining performance.</p>
+          </div>
+          <div class="obj-card c-blue reveal" style="--d:.38s">
+            <div class="obj-num">3</div>
+            <h3 data-i18n="o8.c3.h">Retention Risk</h3>
+            <p data-i18n="o8.c3.p">“I don't see a future here.” — and they leave.</p>
+          </div>
+          <div class="obj-card c-green reveal" style="--d:.46s">
+            <div class="obj-num">4</div>
+            <h3 data-i18n="o8.c4.h">Safety &amp; Quality Risk</h3>
+            <p data-i18n="o8.c4.p">Fatigue and low focus raise errors, safety gaps, and defects.</p>
+          </div>
+          <div class="obj-card c-coral reveal" style="--d:.54s">
+            <div class="obj-num">5</div>
+            <h3 data-i18n="o8.c5.h">Healthcare &amp; Cost Risk</h3>
+            <p data-i18n="o8.c5.p">More sick leave, absenteeism, turnover cost, and lost productivity.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== ORG SLIDE 9 — COMPARE TWO ORGANIZATIONS ============== -->
+    <section class="slide" data-slide="21" data-section="org">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="o9.kicker">The Contrast</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="o9.title">Compare Two Organizations</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="o9.lede">Same market, same pressures — but hope changes everything about how each performs.</p>
+        <div class="compare-grid">
+          <div class="compare-card c-coral reveal" style="--d:.25s">
+            <div class="compare-label" data-i18n="o9.a.label">Company A</div>
+            <ul class="org-list">
+              <li data-i18n="o9.a.1">Low trust</li>
+              <li data-i18n="o9.a.2">Low recognition</li>
+              <li data-i18n="o9.a.3">High pressure</li>
+              <li data-i18n="o9.a.4">Unclear future</li>
+            </ul>
+            <p class="org-quote" data-i18n="o9.a.say">Employees say: “Just survive.”</p>
+            <div class="tag-row"><span class="tag" data-i18n="o9.a.result">Result: stress, burnout, high turnover.</span></div>
+          </div>
+          <div class="compare-card c-green reveal" style="--d:.4s">
+            <div class="compare-label" data-i18n="o9.b.label">Company B</div>
+            <ul class="org-list">
+              <li data-i18n="o9.b.1">Goal clarity</li>
+              <li data-i18n="o9.b.2">Supportive leadership</li>
+              <li data-i18n="o9.b.3">Growth pathways</li>
+              <li data-i18n="o9.b.4">Meaningful work</li>
+            </ul>
+            <p class="org-quote" data-i18n="o9.b.say">Employees say: “We can solve problems.”</p>
+            <div class="tag-row"><span class="tag" data-i18n="o9.b.result">Result: better engagement, adaptability, performance resilience.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CINEMATIC SLIDE C — TWO SCENES ============== -->
+    <section class="slide slide-cinematic" data-slide="22" data-section="hope-model">
+      <div class="slide-inner">
+        <div class="cin-kicker reveal" data-i18n="c3.kicker">Intermission · Two Workplace Scenes</div>
+        <h2 class="cin-headline reveal" style="--d:.18s" data-i18n="c3.title">What hope looks like under pressure</h2>
+        <p class="cin-sub reveal" style="--d:.32s" data-i18n="c3.lede">Same crisis. Two leaders. Watch what changes.</p>
+        <div class="scene-pair">
+          <div class="scene-card reveal" style="--d:.48s" data-tone="tense">
+            <div class="scene-num" data-i18n="c3.s1.num">Scene I — The Deadline</div>
+            <h3 class="scene-title" data-i18n="c3.s1.title">When hope quietly leaves the room</h3>
+            <ul class="scene-beats">
+              <li data-i18n="c3.s1.b1">Mission-impossible target dropped on the team.</li>
+              <li data-i18n="c3.s1.b2">Manager blames the floor. Floor blames each other.</li>
+              <li data-i18n="c3.s1.b3">Mr. Khan stops volunteering ideas.</li>
+              <li data-i18n="c3.s1.b4">By Friday, half the team is quiet-quitting.</li>
+            </ul>
+            <div class="scene-outcome" data-i18n="c3.s1.out">Hope leaves the room. Performance follows.</div>
+          </div>
+          <div class="scene-card reveal" style="--d:.64s" data-tone="warm">
+            <div class="scene-num" data-i18n="c3.s2.num">Scene II — The Choice</div>
+            <h3 class="scene-title" data-i18n="c3.s2.title">When a leader changes the air</h3>
+            <ul class="scene-beats">
+              <li data-i18n="c3.s2.b1">Same pressure. Different leader.</li>
+              <li data-i18n="c3.s2.b2">Names one clear goal — and why it matters.</li>
+              <li data-i18n="c3.s2.b3">Offers two alternative pathways the team can choose.</li>
+              <li data-i18n="c3.s2.b4">Logs daily 5-minute wins on a shared board.</li>
+            </ul>
+            <div class="scene-outcome" data-i18n="c3.s2.out">Hope re-enters the room. People re-engage.</div>
+          </div>
+        </div>
+        <p class="cin-finishing-line reveal" style="--d:.82s" data-i18n="c3.close">The crisis didn't change. The leadership did.</p>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 11 — HOPE ACTION MODEL ============== -->
+    <section class="slide" data-slide="23" data-section="hope-model">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s11.kicker">Session 4 — Transformation</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s11.title">The HOPE Action Model</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s11.lede">
+          Hope increases when people move from thinking to doing. This four-step model bridges the gap between intention and action.
+        </p>
+        <div class="code-pill reveal" style="--d:.25s">
+          <span class="code-key">MODEL</span>
+          <span class="code-val">H-O-P-E = Think → Plan → Do</span>
+        </div>
+        <div class="hope-letters">
+          <div class="hope-letter c-blue reveal" style="--d:.35s">
+            <div class="hl-big">H</div>
+            <h3 data-i18n="s11.h.h">Highlight</h3>
+            <p class="hl-tag" data-i18n="s11.h.tag">your goal</p>
+            <p data-i18n="s11.h.p">Name one meaningful goal with clarity and specificity.</p>
+          </div>
+          <div class="hope-letter c-green reveal" style="--d:.45s">
+            <div class="hl-big">O</div>
+            <h3 data-i18n="s11.o.h">Observe</h3>
+            <p class="hl-tag" data-i18n="s11.o.tag">barriers</p>
+            <p data-i18n="s11.o.p">Identify what is currently blocking your progress.</p>
+          </div>
+          <div class="hope-letter c-amber reveal" style="--d:.55s">
+            <div class="hl-big">P</div>
+            <h3 data-i18n="s11.p.h">Plan</h3>
+            <p class="hl-tag" data-i18n="s11.p.tag">pathways</p>
+            <p data-i18n="s11.p.p">Design two or more routes to overcome each barrier.</p>
+          </div>
+          <div class="hope-letter c-coral reveal" style="--d:.65s">
+            <div class="hl-big">E</div>
+            <h3 data-i18n="s11.e.h">Execute</h3>
+            <p class="hl-tag" data-i18n="s11.e.tag">one small step</p>
+            <p data-i18n="s11.e.p">Commit to one tiny action within the next 48 hours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== CINEMATIC SLIDE D — THE SIMULATION ============== -->
+    <section class="slide slide-simulation slide-activity" data-slide="24" data-section="hope-model">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity">
+          <span class="dot"></span>
+          <span data-i18n="c4.kicker">Team Challenge · Live Simulation</span>
+          <span class="mission-timer"><span data-i18n="c4.timer">10 min</span></span>
+        </div>
+        <h2 class="slide-title-h2 reveal" data-i18n="c4.title">Build a Hope Strategy — in 10 Minutes</h2>
+        <div class="mission-brief reveal" style="--d:.18s">
+          <div class="mission-brief-label" data-i18n="c4.brief.label">Your Mission</div>
+          <p class="mission-brief-text" data-i18n="c4.brief.text">Your team has been hit by a crisis. Use the H·O·P·E framework — together — to build a hope-driven response in the next 10 minutes.</p>
+        </div>
+        <div class="slide-lede reveal" style="--d:.26s" data-i18n="c4.choose">Pick one crisis to solve as a team:</div>
+        <div class="mission-options reveal" style="--d:.36s">
+          <div class="mission-option"><div class="mission-option-icon">💸</div><div class="mission-option-text" data-i18n="c4.opt1">Sudden 30% budget cut</div></div>
+          <div class="mission-option"><div class="mission-option-icon">👋</div><div class="mission-option-text" data-i18n="c4.opt2">A senior leader has resigned</div></div>
+          <div class="mission-option"><div class="mission-option-icon">📉</div><div class="mission-option-text" data-i18n="c4.opt3">Your biggest client just walked out</div></div>
+        </div>
+        <div class="hope-steps reveal" style="--d:.5s">
+          <div class="hope-step"><div class="hope-step-letter">H</div><div class="hope-step-word" data-i18n="c4.h.word">Highlight</div><div class="hope-step-prompt" data-i18n="c4.h.prompt">One realistic goal in this crisis.</div></div>
+          <div class="hope-step"><div class="hope-step-letter">O</div><div class="hope-step-word" data-i18n="c4.o.word">Observe</div><div class="hope-step-prompt" data-i18n="c4.o.prompt">Two biggest barriers in the team's way.</div></div>
+          <div class="hope-step"><div class="hope-step-letter">P</div><div class="hope-step-word" data-i18n="c4.p.word">Plan</div><div class="hope-step-prompt" data-i18n="c4.p.prompt">Three different pathways forward.</div></div>
+          <div class="hope-step"><div class="hope-step-letter">E</div><div class="hope-step-word" data-i18n="c4.e.word">Execute</div><div class="hope-step-prompt" data-i18n="c4.e.prompt">One action your team commits to by Friday.</div></div>
+        </div>
+        <div class="q-stack">
+          <div class="q-card c-blue reveal" style="--d:.65s">
+            <label for="simulation_plan" class="q-question" data-i18n="c4.input.label">Write your team's hope strategy (saves to facilitator)</label>
+            <textarea id="simulation_plan" data-key="simulation_plan" rows="6" placeholder="Goal:&#10;Barriers:&#10;Three pathways:&#10;Friday action:" data-i18n-placeholder="c4.input.ph"></textarea>
+            <div class="q-meta"><span class="save-state" data-for="simulation_plan" data-i18n="s4.saved">Saved automatically</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 12 — PERSONAL HOPE ACTION PLAN (ACTIVITY) ============== -->
+    <section class="slide slide-activity" data-slide="25" data-section="hope-model">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s12.kicker">Main Workshop Output</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s12.title">Personal Hope Action Plan</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s12.lede">
+          Use the HOPE Action Model to create your personal plan. This is your takeaway from today's workshop.
+        </p>
+
+        <div class="plan-row plan-wide reveal" style="--d:.25s">
+          <div class="plan-card c-blue">
+            <div class="plan-label" data-i18n="s12.goal.label">One Meaningful Goal</div>
+            <p class="plan-hint" data-i18n="s12.goal.hint">Career or life goal I want to achieve</p>
+            <textarea data-key="plan_goal" rows="2" placeholder="Be specific. One sentence."></textarea>
+          </div>
+        </div>
+
+        <div class="plan-row plan-wide reveal" style="--d:.4s">
+          <div class="plan-card c-green">
+            <div class="plan-label" data-i18n="s12.barrier.label">One Current Barrier</div>
+            <p class="plan-hint" data-i18n="s12.barrier.hint">What is blocking my progress right now</p>
+            <textarea data-key="plan_barrier" rows="2" placeholder="Name the obstacle honestly."></textarea>
+          </div>
+        </div>
+
+        <div class="plan-row plan-two reveal" style="--d:.55s">
+          <div class="plan-card c-amber">
+            <div class="plan-label" data-i18n="s12.sola.label">Solution A</div>
+            <p class="plan-hint" data-i18n="s12.sola.hint">First possible pathway forward</p>
+            <textarea data-key="plan_sol_a" rows="2" placeholder="A concrete approach."></textarea>
+          </div>
+          <div class="plan-card c-amber">
+            <div class="plan-label" data-i18n="s12.solb.label">Solution B</div>
+            <p class="plan-hint" data-i18n="s12.solb.hint">Alternative route if A fails</p>
+            <textarea data-key="plan_sol_b" rows="2" placeholder="A backup approach."></textarea>
+          </div>
+        </div>
+
+        <div class="plan-row plan-wide reveal" style="--d:.7s">
+          <div class="plan-card c-coral plan-emphasis">
+            <div class="plan-label" data-i18n="s12.action.label">One Action Within 48 Hours</div>
+            <p class="plan-hint" data-i18n="s12.action.hint">The smallest step I will take immediately</p>
+            <textarea data-key="plan_action" rows="2" placeholder="Tiny. Concrete. Scheduled."></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 13 — THREE REFLECTION QUESTIONS ============== -->
+    <section class="slide slide-activity" data-slide="26" data-section="hope-model">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s13.kicker">Reflection — Session 4</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s13.title">Three Reflection Questions</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s13.lede">
+          Before completing your action plan, reflect on these three questions to deepen your commitment.
+        </p>
+        <div class="q-stack">
+          <div class="q-card c-blue reveal" style="--d:.25s">
+            <div class="q-head"><span class="q-label">Question 1</span></div>
+            <label for="ref_blocking" class="q-question" data-i18n="s13.q1.q">What is blocking my hope right now?</label>
+            <textarea id="ref_blocking" data-key="ref_blocking" rows="3" placeholder="Name it without judgment."></textarea>
+          </div>
+          <div class="q-card c-green reveal" style="--d:.4s">
+            <div class="q-head"><span class="q-label">Question 2</span></div>
+            <label for="ref_step" class="q-question" data-i18n="s13.q2.q">What small step can I take immediately?</label>
+            <textarea id="ref_step" data-key="ref_step" rows="3" placeholder="Something doable within hours, not weeks."></textarea>
+          </div>
+          <div class="q-card c-amber reveal" style="--d:.55s">
+            <div class="q-head"><span class="q-label" data-i18n="s13.q3.label">Question 3</span></div>
+            <label for="ref_support" class="q-question" data-i18n="s13.q3.q">Who can support me on this journey?</label>
+            <textarea id="ref_support" data-key="ref_support" rows="3" placeholder="Name one person. Reach out this week."></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 14 — HDPS ============== -->
+    <section class="slide" data-slide="27" data-section="hdps">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s14.kicker">HR Framework</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s14.title">HOPE-Driven Performance System</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s14.lede">
+          Traditional HR KPIs measure output. The HDPS integrates psychological hope as a performance fuel.
+        </p>
+        <div class="code-pill reveal" style="--d:.25s">
+          <span class="code-key">HDPS</span>
+          <span class="code-val">Performance KPIs + Hope KPIs = Sustainable High Performance</span>
+        </div>
+        <div class="layer-grid">
+          <div class="layer-card c-blue reveal" style="--d:.35s">
+            <div class="layer-label" data-i18n="s14.l1.label">Layer 1 — Hard KPIs</div>
+            <h3 data-i18n="s14.l1.h">Traditional Metrics</h3>
+            <ul class="layer-list">
+              <li><span class="bullet"></span> <span data-i18n="s14.l1.i1">Productivity rate</span></li>
+              <li><span class="bullet"></span> <span data-i18n="s14.l1.i2">Attendance and punctuality</span></li>
+              <li><span class="bullet"></span> <span data-i18n="s14.l1.i3">Quality error rate</span></li>
+              <li><span class="bullet"></span> <span data-i18n="s14.l1.i4">Training completion</span></li>
+            </ul>
+          </div>
+          <div class="layer-card c-green reveal" style="--d:.5s">
+            <div class="layer-label" data-i18n="s14.l2.label">Layer 2 — Soft KPIs</div>
+            <h3 data-i18n="s14.l2.h">Hope KPI Index</h3>
+            <ul class="layer-list">
+              <li><span class="bullet"></span> <span data-i18n="s14.l2.i1">Goal clarity score</span></li>
+              <li><span class="bullet"></span> <span data-i18n="s14.l2.i2">Pathway thinking ability</span></li>
+              <li><span class="bullet"></span> <span data-i18n="s14.l2.i3">Agency confidence score</span></li>
+              <li><span class="bullet"></span> <span data-i18n="s14.l2.i4">Motivation stability</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 15 — HOPE-PERFORMANCE MATRIX ============== -->
+    <section class="slide" data-slide="28" data-section="hdps">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s15.kicker">HR Framework</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s15.title">Hope-Performance Matrix</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s15.lede">
+          Classify employees by combining hope levels with performance scores. This reveals hidden talent and rising risks.
+        </p>
+        <div class="code-pill reveal" style="--d:.25s">
+          <span class="code-key">FORMULA</span>
+          <span class="code-val">HKI = (G + P + A + M + F) / 5</span>
+        </div>
+
+        <div class="hki-legend reveal" style="--d:.3s">
+          <div class="legend-item">
+            <span class="legend-letter" style="color: var(--accent-blue);">G</span>
+            <span class="legend-meaning" data-i18n="s15.lg.goal">Goal Clarity</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-letter" style="color: var(--accent-green);">P</span>
+            <span class="legend-meaning" data-i18n="s15.lg.path">Pathway Thinking</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-letter" style="color: var(--accent-amber);">A</span>
+            <span class="legend-meaning" data-i18n="s15.lg.agency">Agency Score</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-letter" style="color: var(--accent-coral);">M</span>
+            <span class="legend-meaning" data-i18n="s15.lg.motiv">Motivation Stability</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-letter" style="color: #6dd5c5;">F</span>
+            <span class="legend-meaning" data-i18n="s15.lg.future">Future Belief</span>
+          </div>
+        </div>
+
+        <div class="matrix reveal" style="--d:.35s">
+          <div class="matrix-corner"></div>
+          <div class="matrix-col-label" data-i18n="s15.collow">Low Performance</div>
+          <div class="matrix-col-label" data-i18n="s15.colhigh">High Performance</div>
+
+          <div class="matrix-row-label c-coral-t" data-i18n="s15.rowlow">Low Hope</div>
+          <div class="matrix-cell c-coral">
+            <h4 data-i18n="s15.atrisk.h">At Risk Zone</h4>
+            <p data-i18n="s15.atrisk.p">Requires immediate intervention and coaching.</p>
+          </div>
+          <div class="matrix-cell c-amber">
+            <h4 data-i18n="s15.temp.h">Temporary Performer</h4>
+            <p data-i18n="s15.temp.p">Performance may decline without hope recovery.</p>
+          </div>
+
+          <div class="matrix-row-label c-amber-t" data-i18n="s15.rowmed">Medium Hope</div>
+          <div class="matrix-cell c-amber">
+            <h4 data-i18n="s15.dev.h">Developing Zone</h4>
+            <p data-i18n="s15.dev.p">High potential with targeted hope-building support.</p>
+          </div>
+          <div class="matrix-cell c-amber">
+            <h4 data-i18n="s15.stable.h">Stable Performer</h4>
+            <p data-i18n="s15.stable.p">Consistent output with room for growth.</p>
+          </div>
+
+          <div class="matrix-row-label c-green-t" data-i18n="s15.rowhigh">High Hope</div>
+          <div class="matrix-cell c-green">
+            <h4 data-i18n="s15.growth.h">Growth Candidate</h4>
+            <p data-i18n="s15.growth.p">Invest in skill development for future leadership.</p>
+          </div>
+          <div class="matrix-cell c-green matrix-star">
+            <h4 data-i18n="s15.star.h">Star Performer</h4>
+            <p data-i18n="s15.star.p">Top talent. Assign strategic projects and mentor others.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 16 — CLOSING ============== -->
+    <section class="slide slide-close" data-slide="29" data-section="hdps">
+      <div class="slide-inner close-inner">
+        <div class="kicker reveal"><span class="dot"></span> <span data-i18n="s16.kicker">Closing Message</span></div>
+        <h2 class="close-title reveal" style="--d:.15s" data-i18n="s16.title">
+          Hope is not something <em>you wait for</em>
+        </h2>
+        <p class="close-sub reveal" style="--d:.3s" data-i18n="s16.sub">
+          It is something you practice daily through small decisions.
+        </p>
+        <blockquote class="close-quote reveal" style="--d:.45s" data-i18n="s16.quote">
+          "Hope grows when action begins, even in uncertainty."
+        </blockquote>
+        <div class="close-meta reveal" style="--d:.6s">
+          <div>
+            <div class="meta-k" data-i18n="s16.frameworks">Frameworks Covered</div>
+            <div class="meta-list">
+              <span>Snyder's Theory</span>
+              <span>HOPE Action Model</span>
+              <span>HDPS System</span>
+            </div>
+          </div>
+          <div>
+            <div class="meta-k" data-i18n="s16.takeaway">Your Takeaway</div>
+            <div class="meta-list">
+              <span>Personal Hope Action Plan</span>
+              <span>4 Daily Habits</span>
+              <span>1 Action in 48 Hours</span>
+            </div>
+          </div>
+        </div>
+        <div class="close-cta reveal" style="--d:.75s">
+          <p data-i18n="s16.cta.p">Ready to submit your reflections and receive your summary?</p>
+          <button class="btn-primary" id="goToSubmit" data-i18n="btn.goto_submit">Go to Submission →</button>
+        </div>
+      </div>
+      <div class="ambient-blob blob-c" aria-hidden="true"></div>
+    </section>
+
+    <!-- ============== SLIDE 17 — SUBMIT + SURVEY ============== -->
+    <section class="slide" data-slide="30" data-section="hdps">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s17.kicker">Final Step</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s17.title">Submit Your Action Plan</h2>
+        <p class="slide-lede reveal" style="--d:.15s">
+          Your responses help us improve future workshops. Fields marked <span class="req-badge">Required</span> are needed to issue your certificate. All data is private and stored securely.
+        </p>
+
+        <div class="privacy-note reveal" style="--d:.17s" role="note">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>
+            We collect this only to issue your certificate and improve future workshops.
+            Data stays with <strong>ProfessionalsTalk</strong> and is not shared with third parties.
+            By submitting, you consent to receive your certificate at the email and number above.
+          </span>
+        </div>
+
+        <div class="submit-form">
+          <div class="form-row reveal" style="--d:.2s">
+            <div class="form-field" data-required="participant_name">
+              <label for="participant_name"><span data-i18n="form.name">Name</span> <span class="req-badge" data-i18n="badge.required">Required</span></label>
+              <input type="text" id="participant_name" data-key="participant_name" placeholder="Your full name (appears on certificate)" data-i18n-placeholder="form.name.ph" autocomplete="name" required />
+            </div>
+            <div class="form-field" data-required="participant_mobile">
+              <label for="participant_mobile"><span data-i18n="form.mobile">Mobile</span> <span class="req-badge" data-i18n="badge.required">Required</span></label>
+              <input type="tel" id="participant_mobile" data-key="participant_mobile" placeholder="+880 1XXX-XXXXXX" inputmode="tel" autocomplete="tel" required />
+            </div>
+          </div>
+
+          <div class="form-row reveal" style="--d:.3s">
+            <div class="form-field" data-required="participant_email">
+              <label for="participant_email"><span data-i18n="form.email">Email</span> <span class="req-badge" data-i18n="badge.required">Required</span></label>
+              <input type="email" id="participant_email" data-key="participant_email" placeholder="So we can send you a summary" data-i18n-placeholder="form.email.ph" autocomplete="email" required />
+            </div>
+            <div class="form-field">
+              <label for="participant_role"><span data-i18n="form.role">Role</span> <span class="opt" data-i18n="badge.optional">(optional)</span></label>
+              <input type="text" id="participant_role" data-key="participant_role" placeholder="e.g. HR Manager, Engineer, Student" />
+            </div>
+          </div>
+
+          <div class="form-row reveal" style="--d:.35s">
+            <div class="form-field" style="grid-column: 1 / -1;">
+              <label for="participant_org"><span data-i18n="form.org">Organisation</span> <span class="opt" data-i18n="badge.optional">(optional)</span></label>
+              <input type="text" id="participant_org" data-key="participant_org" placeholder="Where you work or study" autocomplete="organization" />
+            </div>
+          </div>
+
+          <!-- Hope self-rating sliders -->
+          <div class="rating-block reveal" style="--d:.4s">
+            <h3 data-i18n="s17.rating.h">How would you rate yourself <em>right now</em>?</h3>
+            <p class="rating-hint" data-i18n="s17.rating.hint">Move each slider from 1 (low) to 10 (high).</p>
+
+            <div class="rating-row">
+              <label>
+                <span class="rating-name">Goal Clarity</span>
+                <span class="rating-val" id="val_rate_goal">5</span>
+              </label>
+              <input type="range" min="1" max="10" value="5" data-key="rate_goal" id="rate_goal" />
+            </div>
+            <div class="rating-row">
+              <label>
+                <span class="rating-name">Pathway Thinking</span>
+                <span class="rating-val" id="val_rate_path">5</span>
+              </label>
+              <input type="range" min="1" max="10" value="5" data-key="rate_path" id="rate_path" />
+            </div>
+            <div class="rating-row">
+              <label>
+                <span class="rating-name" data-i18n="s17.rate.agency">Agency (Belief I can act)</span>
+                <span class="rating-val" id="val_rate_agency">5</span>
+              </label>
+              <input type="range" min="1" max="10" value="5" data-key="rate_agency" id="rate_agency" />
+            </div>
+            <div class="rating-row">
+              <label>
+                <span class="rating-name">Motivation Stability</span>
+                <span class="rating-val" id="val_rate_motivation">5</span>
+              </label>
+              <input type="range" min="1" max="10" value="5" data-key="rate_motivation" id="rate_motivation" />
+            </div>
+            <div class="rating-row">
+              <label>
+                <span class="rating-name">Future Belief <em style="opacity:.6">(Confidence in what's ahead)</em></span>
+                <span class="rating-val" id="val_rate_future">5</span>
+              </label>
+              <input type="range" min="1" max="10" value="5" data-key="rate_future" id="rate_future" />
+            </div>
+
+            <div class="hki-display">
+              <div class="hki-label" data-i18n="s17.hki.label">Your Hope KPI Index (HKI)</div>
+              <div class="hki-value" id="hkiValue">5.0</div>
+              <div class="hki-bar"><div class="hki-bar-fill" id="hkiBarFill"></div></div>
+            </div>
+          </div>
+
+          <div class="feedback-block reveal" style="--d:.5s">
+            <label for="feedback"><span data-i18n="s17.feedback.label">One thing you will start doing this week</span> <span class="opt">(optional)</span></label>
+            <textarea id="feedback" data-key="feedback" rows="3" placeholder="The smallest commitment. The most important one."></textarea>
+          </div>
+
+          <div class="consent-row reveal" style="--d:.6s">
+            <label class="consent">
+              <input type="checkbox" id="consent" />
+              <span class="consent-box"></span>
+              <span data-i18n="s17.consent">I'd like an emailed copy of my Hope Action Plan and consent to its storage for workshop improvement.</span>
+            </label>
+          </div>
+
+          <div class="submit-actions reveal" style="--d:.7s">
+            <button class="btn-primary" id="continueBtn">
+              <span class="btn-label" data-i18n="btn.continue">Continue to Survey</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <button class="btn-ghost" id="exportBtn" data-i18n="btn.export_pdf">Download as PDF</button>
+            <button class="btn-ghost" id="clearBtn" data-i18n="btn.clear_data">Clear My Data</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 18 — WORKSHOP SURVEY ============== -->
+    <section class="slide slide-survey" data-slide="31" data-section="hdps">
+      <div class="slide-inner">
+        <div class="kicker kicker-survey"><span class="dot"></span> <span data-i18n="s18.kicker">Workshop Feedback · 5 Questions</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s18.title">How was the workshop?</h2>
+        <p class="slide-lede reveal" style="--d:.15s">
+          Five quick questions before we generate your certificate. Questions marked <span class="req-badge">Required</span> must be answered. Your honest feedback shapes future sessions and helps others find this workshop.
+        </p>
+
+        <div class="survey-stack">
+
+          <!-- Q1: Overall Experience -->
+          <div class="survey-card c-blue reveal" style="--d:.25s">
+            <div class="survey-q-head">
+              <span class="survey-num">01</span>
+              <div>
+                <h3 data-i18n="s18.q1.h">How would you rate your overall workshop experience?</h3>
+                <p class="survey-hint" data-i18n="s18.q1.hint">1 = Not useful at all · 10 = Transformative</p>
+              </div>
+            </div>
+            <div class="survey-slider-row">
+              <span class="survey-bound">1</span>
+              <input type="range" min="1" max="10" value="7" data-key="survey_overall" id="survey_overall" />
+              <span class="survey-bound">10</span>
+              <div class="survey-val" id="val_survey_overall">7</div>
+            </div>
+          </div>
+
+          <!-- Q2: Net Promoter Score -->
+          <div class="survey-card c-green reveal" style="--d:.35s">
+            <div class="survey-q-head">
+              <span class="survey-num">02</span>
+              <div>
+                <h3 data-i18n="s18.q2.h">How likely are you to recommend this workshop to a colleague or friend?</h3>
+                <p class="survey-hint" data-i18n="s18.q2.hint">0 = Not at all likely · 10 = Extremely likely</p>
+              </div>
+            </div>
+            <div class="survey-slider-row">
+              <span class="survey-bound">0</span>
+              <input type="range" min="0" max="10" value="8" data-key="survey_nps" id="survey_nps" />
+              <span class="survey-bound">10</span>
+              <div class="survey-val" id="val_survey_nps">8</div>
+            </div>
+          </div>
+
+          <!-- Q3: Most Valuable Takeaway -->
+          <div class="survey-card c-amber reveal" style="--d:.45s" data-required="survey_takeaway">
+            <div class="survey-q-head">
+              <span class="survey-num">03</span>
+              <div>
+                <h3><span data-i18n="s18.q3.h">What was the single most valuable insight or technique you'll take away?</span> <span class="req-badge" data-i18n="badge.required">Required</span></h3>
+                <p class="survey-hint" data-i18n="s18.q3.hint">In a sentence or two. Your words may help others discover this workshop.</p>
+              </div>
+            </div>
+            <textarea data-key="survey_takeaway" rows="3" placeholder="The one thing you'll remember from today…" required></textarea>
+          </div>
+
+          <!-- Q4: Concrete change -->
+          <div class="survey-card c-coral reveal" style="--d:.55s" data-required="survey_change">
+            <div class="survey-q-head">
+              <span class="survey-num">04</span>
+              <div>
+                <h3><span data-i18n="s18.q4.h">What will you start doing differently after today?</span> <span class="req-badge" data-i18n="badge.required">Required</span></h3>
+                <p class="survey-hint" data-i18n="s18.q4.hint">A concrete change you'll begin within the next 7 days.</p>
+              </div>
+            </div>
+            <textarea data-key="survey_change" rows="3" placeholder="One small change you'll make…" required></textarea>
+          </div>
+
+          <!-- Q5: Future topics -->
+          <div class="survey-card c-blue reveal" style="--d:.65s" data-required="survey_future_topics">
+            <div class="survey-q-head">
+              <span class="survey-num">05</span>
+              <div>
+                <h3><span data-i18n="s18.q5.h">Which topics would you like to see in future workshops?</span> <span class="req-badge" data-i18n="badge.required">Required</span></h3>
+                <p class="survey-hint" data-i18n="s18.q5.hint">Tap any that interest you, or write your own below.</p>
+              </div>
+            </div>
+            <div class="survey-chips" id="surveyTopics">
+              <label class="survey-chip"><input type="checkbox" value="Leadership"><span>Leadership</span></label>
+              <label class="survey-chip"><input type="checkbox" value="Productivity & Focus"><span>Productivity &amp; Focus</span></label>
+              <label class="survey-chip"><input type="checkbox" value="Mental Health at Work"><span>Mental Health at Work</span></label>
+              <label class="survey-chip"><input type="checkbox" value="Career Development"><span>Career Development</span></label>
+              <label class="survey-chip"><input type="checkbox" value="Team Dynamics"><span>Team Dynamics</span></label>
+              <label class="survey-chip"><input type="checkbox" value="AI in HR"><span>AI in HR</span></label>
+              <label class="survey-chip"><input type="checkbox" value="People Analytics"><span>People Analytics</span></label>
+              <label class="survey-chip"><input type="checkbox" value="Resilience & Stress"><span>Resilience &amp; Stress</span></label>
+              <label class="survey-chip"><input type="checkbox" value="Communication"><span>Communication</span></label>
+            </div>
+            <input type="text" data-key="survey_future_other" placeholder="Other topic (please specify)" class="survey-other" />
+            <input type="hidden" data-key="survey_future_topics" id="survey_future_topics" value="" />
+          </div>
+
+          <!-- Testimonial consent -->
+          <div class="consent-row reveal" style="--d:.75s">
+            <label class="consent">
+              <input type="checkbox" data-key="survey_testimonial_consent" id="survey_testimonial_consent" />
+              <span class="consent-box"></span>
+              <span data-i18n="s18.consent">I'm happy for ProfessionalsTalk to share my feedback (anonymously or with attribution) to help others discover this workshop.</span>
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <div class="submit-actions reveal" style="--d:.85s">
+            <button class="btn-primary" id="submitBtn">
+              <span class="btn-label" data-i18n="btn.submit_cert">Submit &amp; Get My Certificate</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+            <button class="btn-ghost" id="surveyBackBtn" data-i18n="btn.back_plan">Back to Action Plan</button>
+          </div>
+
+          <div class="submit-status" id="submitStatus" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 19 — CERTIFICATE OF COMPLETION ============== -->
+    <section class="slide slide-certificate" data-slide="32" data-section="hdps">
+      <div class="slide-inner cert-inner">
+        <div class="kicker kicker-cert"><span class="dot"></span> <span data-i18n="s19.kicker">Certificate of Completion</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s19.title">Your Certificate is Ready</h2>
+        <p class="slide-lede reveal" style="--d:.15s" id="certIntro">
+          Complete the submission step first — your name from the form will appear on the certificate.
+        </p>
+
+        <div class="cert-preview-wrap reveal" style="--d:.25s">
+          <div class="cert-preview" id="certPreview" aria-label="Certificate preview">
+            <!-- SVG certificate is injected here by JS -->
+          </div>
+        </div>
+
+        <div class="cert-actions reveal" style="--d:.4s">
+          <button class="btn-primary" id="downloadCertBtn" disabled>
+            <span class="btn-label" data-i18n="btn.download_cert">Download Certificate (PNG)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+          <button class="btn-secondary" id="downloadSummaryBtn">
+            <span class="btn-label" data-i18n="btn.download_summary">Download Learning Summary (PDF)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          </button>
+          <button class="btn-ghost" id="printCertBtn" disabled data-i18n="btn.print_pdf">Print / Save as PDF</button>
+        </div>
+        <p class="summary-hint reveal" style="--d:.48s" data-i18n="summary.hint">Your Learning Summary is a personal take-home PDF with the key concepts, your action plan, and your Hope scores — to keep learning after today.</p>
+
+        <div class="cert-meta reveal" style="--d:.55s">
+          <div><span class="meta-k" data-i18n="cert.issuer.k">Issuer</span><span class="meta-v">ProfessionalsTalk</span></div>
+          <div><span class="meta-k" data-i18n="cert.workshop.k">Workshop</span><span class="meta-v" data-i18n="cert.workshop.v">Hope as a Skill · 3 Hours</span></div>
+          <div><span class="meta-k" data-i18n="cert.verify.k">Verify</span><span class="meta-v"><a href="https://www.professionalstalk.me" target="_blank" rel="noopener">professionalstalk.me</a></span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       SLIDE FOOTER (number + brand)
+       ============================================================ -->
+  <footer class="slide-foot" aria-hidden="true">
+    <div class="foot-num" id="footNum">01</div>
+    <div class="foot-brand">HOPE Workshop Series</div>
+  </footer>
+
+  <!-- ============================================================
+       NAVIGATION CONTROLS (prev / next floating)
+       ============================================================ -->
+  <div class="nav-controls">
+    <button class="ctrl-btn" id="prevBtn" aria-label="Previous slide">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="ctrl-btn ctrl-next" id="nextBtn" aria-label="Next slide">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- progress bar bottom -->
+  <div class="progress-bar" aria-hidden="true">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- toast container -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <!-- ============================================================
+       KEYBOARD SHORTCUTS — hint pill + help overlay
+       ============================================================ -->
+  <button class="shortcuts-hint" id="shortcutsHint" aria-label="Show keyboard shortcuts">
+    Press <kbd>?</kbd> for shortcuts
+  </button>
+
+  <div class="shortcuts-overlay" id="shortcutsOverlay" role="dialog" aria-modal="true" aria-labelledby="scTitle">
+    <div class="shortcuts-panel">
+      <h3 id="scTitle">Keyboard Shortcuts</h3>
+      <p class="sc-sub">Navigate the workshop hands-free.</p>
+      <div class="sc-list">
+        <div class="sc-row">
+          <span class="sc-label">Next slide</span>
+          <span class="sc-keys"><kbd>→</kbd><kbd>Space</kbd></span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">Previous slide</span>
+          <span class="sc-keys"><kbd>←</kbd></span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">First slide</span>
+          <span class="sc-keys"><kbd>Home</kbd></span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">Last slide</span>
+          <span class="sc-keys"><kbd>End</kbd></span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">Toggle theme</span>
+          <span class="sc-keys"><kbd>T</kbd></span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">Toggle language</span>
+          <span class="sc-keys"><kbd>L</kbd></span>
+        </div>
+        <div class="sc-row">
+          <span class="sc-label">Show / hide this panel</span>
+          <span class="sc-keys"><kbd>?</kbd></span>
+        </div>
+      </div>
+      <button class="shortcuts-close" id="shortcutsClose">Close (Esc)</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CONFIG — set your deployed Apps Script Web App URL here
+       ============================================================ -->
+  <script>
+    window.HOPE_CONFIG = {
+      // After deploying Code.gs as a Web App, paste the /exec URL here:
+      GOOGLE_SCRIPT_URL: "",
+      // Workshop metadata
+      WORKSHOP_ID: "hope-as-a-skill-2026",
+      WORKSHOP_NAME: "Hope as a Skill — 3hr Workshop",
+      VERSION: "1.0.0",
+
+      // =====================================================================
+      // PER-BATCH ACCESS CODES  (commercial / per-cohort control)
+      // ---------------------------------------------------------------------
+      // Give each batch (client, cohort, training date) its own code so you
+      // can track who's who and revoke access per batch without affecting
+      // others. Generate the "hash" values easily with admin.html.
+      //
+      //   name    : a label you'll recognise (shown in your Google Sheet)
+      //   hash    : SHA-256 hash of the access code participants type
+      //   expires : "YYYY-MM-DD" — code stops working AFTER this date.
+      //             Leave "" for no expiry.
+      //   active  : set false to instantly disable a batch (keeps the record)
+      //
+      // To ADD a batch:    paste a new line (generate it in admin.html), redeploy.
+      // To REVOKE a batch: set active:false  OR  set an expires date in the past.
+      // =====================================================================
+      BATCH_CODES: [
+        // Example below is the code "HOPE2026" (the original default).
+        { name: "Demo / Default", hash: "cca889e821394424ab4139f713652c755f0eff89f24c9f9d77defcfad5a11979", expires: "", active: true }
+        // , { name: "Acme Corp — Mar 2026", hash: "PASTE_HASH_HERE", expires: "2026-04-30", active: true }
+        // , { name: "Beta Ltd — Apr 2026",  hash: "PASTE_HASH_HERE", expires: "2026-05-31", active: true }
+      ],
+
+      // Master admin code — ALWAYS works, never expires. Keep this private; it
+      // lets you (the facilitator) into any batch for testing/support.
+      // Default is "HOPE2026". Change it via admin.html. Leave "" to disable.
+      ADMIN_PASSWORD_HASH: "cca889e821394424ab4139f713652c755f0eff89f24c9f9d77defcfad5a11979",
+
+      // Certificate issuer
+      ISSUER_NAME: "ProfessionalsTalk",
+      ISSUER_URL: "www.professionalstalk.me",
+      ISSUER_TAGLINE: "AI · Python · Data Skills for Professionals"
+    };
+  </script>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
