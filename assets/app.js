@@ -1262,6 +1262,13 @@
       "c4.e.prompt": "One action your team commits to by Friday.",
       "c4.input.label": "Write your team's hope strategy (saves to facilitator)",
       "c4.input.ph": "Goal:\nBarriers:\nThree pathways:\nFriday action:",
+      // ---- Cinematic cold open (slide 1) ----
+      "cold.presents": "ProfessionalsTalk Presents",
+      "cold.title": "Hope.",
+      "cold.subtitle": "As a Skill",
+      "cold.tagline": "Three hours. A skill that lasts a lifetime.",
+      "cold.chapter": "Chapter One",
+
     },
     bn: {
       "brand": "HOPE ওয়ার্কশপ",
@@ -1685,6 +1692,13 @@
       "c4.e.prompt": "শুক্রবারের মধ্যে যে একটি কাজ আপনার দল করবে।",
       "c4.input.label": "আপনার দলের আশা কৌশল লিখুন (ফ্যাসিলিটেটরের কাছে সংরক্ষিত হবে)",
       "c4.input.ph": "লক্ষ্য:\nবাধা:\nতিনটি পথ:\nশুক্রবারের কাজ:",
+      // ---- Cinematic cold open (slide 1) ----
+      "cold.presents": "ProfessionalsTalk উপস্থাপন",
+      "cold.title": "আশা।",
+      "cold.subtitle": "একটি দক্ষতা হিসেবে",
+      "cold.tagline": "তিন ঘণ্টা। একটি দক্ষতা—সারাজীবন।",
+      "cold.chapter": "অধ্যায় এক",
+
     },
   };
 
