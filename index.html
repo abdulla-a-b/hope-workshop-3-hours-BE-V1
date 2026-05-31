@@ -187,100 +187,73 @@
     </section>
 
     <!-- ============== SLIDE 02 — OBJECTIVES ============== -->
-    <section class="slide" data-slide="3" data-section="opening">
+
+    <!-- ============== SLIDE 3 — "WHAT HAPPENS WHEN EMPLOYEES LOSE HOPE?" ============== -->
+    <section class="slide slide-cinematic slide-activity tone-problem" data-slide="3" data-section="opening">
       <div class="slide-inner">
-        <div class="kicker"><span class="dot"></span> <span data-i18n="s2.kicker">Workshop Overview</span></div>
-        <h2 class="slide-title-h2 reveal" data-i18n="s2.title">Workshop Objectives</h2>
-        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s2.lede">
-          By the end of this 3-hour session, participants will have developed practical tools to transform hope from a fleeting feeling into a daily practice.
-        </p>
-        <div class="obj-grid">
-          <div class="obj-card c-blue reveal" style="--d:.25s">
-            <div class="obj-num">1</div>
-            <h3 data-i18n="s2.c1.h">Understand Hope</h3>
-            <p data-i18n="s2.c1.p">Learn hope as a psychological skill, not just an emotion that comes and goes.</p>
-          </div>
-          <div class="obj-card c-green reveal" style="--d:.35s">
-            <div class="obj-num">2</div>
-            <h3 data-i18n="s2.c2.h">Build Through Action</h3>
-            <p data-i18n="s2.c2.p">Discover how hope is constructed through daily actions, not luck or circumstance.</p>
-          </div>
-          <div class="obj-card c-amber reveal" style="--d:.45s">
-            <div class="obj-num">3</div>
-            <h3 data-i18n="s2.c3.h">Rebuild Motivation</h3>
-            <p data-i18n="s2.c3.p">Develop personal tools to reignite motivation during uncertainty and pressure.</p>
-          </div>
-          <div class="obj-card c-coral reveal" style="--d:.55s">
-            <div class="obj-num">4</div>
-            <h3 data-i18n="s2.c4.h">Create an Action Plan</h3>
-            <p data-i18n="s2.c4.p">Leave with a concrete Personal Hope Action Plan for immediate implementation.</p>
+        <div class="cin-kicker reveal" data-i18n="prob.kicker">Act I · The Problem</div>
+        <h2 class="cin-headline reveal" style="--d:.2s">
+          <span data-i18n="prob.q1">What happens</span><br>
+          <em data-i18n="prob.q2">when employees</em><br>
+          <span class="accent" data-i18n="prob.q3">lose hope?</span>
+        </h2>
+        <p class="cin-sub reveal" style="--d:.4s" data-i18n="prob.sub">Take 60 seconds. Write what you've seen — one phrase or several, separated by commas.</p>
+        <div class="q-stack reveal" style="--d:.55s">
+          <div class="q-card c-coral">
+            <label for="lose_hope_answer" class="q-question" data-i18n="prob.label">Your observations</label>
+            <textarea id="lose_hope_answer" data-key="lose_hope_answer" rows="4" data-i18n-placeholder="prob.ph" placeholder="e.g. People stop volunteering ideas, sick leave rises, the best ones quietly leave…"></textarea>
+            <div class="q-meta"><span class="save-state" data-for="lose_hope_answer" data-i18n="s4.saved">Saved automatically</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============== SLIDE 03 — WHY HOPE MATTERS ============== -->
-    <section class="slide" data-slide="4" data-section="opening">
+
+    <!-- ============== SLIDE 4 — "THE STRUGGLE" ============== -->
+    <section class="slide slide-activity" data-slide="4" data-section="opening">
       <div class="slide-inner">
-        <div class="kicker"><span class="dot"></span> <span data-i18n="s3.kicker">Session 1 — Opening</span></div>
-        <h2 class="slide-title-h2 reveal" data-i18n="s3.title">Why Hope Matters Today</h2>
-        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s3.lede">
-          In a world of constant uncertainty, professionals feel stuck and mentally overloaded. Hope is not passive thinking — it is a learned psychological capability.
-        </p>
-        <div class="big-stat-list">
-          <div class="big-row c-coral reveal" style="--d:.25s">
-            <div class="big-num">01</div>
-            <div class="big-body">
-              <h3 data-i18n="s3.r1.h">Feeling Stuck</h3>
-              <p data-i18n="s3.r1.p">Professionals feel mentally blocked by uncertainty, pressure, and burnout.</p>
-            </div>
-          </div>
-          <div class="big-row c-amber reveal" style="--d:.4s">
-            <div class="big-num">02</div>
-            <div class="big-body">
-              <h3 data-i18n="s3.r2.h">Impact of Uncertainty</h3>
-              <p data-i18n="s3.r2.p">Rapid change and ambiguity drain motivation and erode confidence over time.</p>
-            </div>
-          </div>
-          <div class="big-row c-green reveal" style="--d:.55s">
-            <div class="big-num">03</div>
-            <div class="big-body">
-              <h3 data-i18n="s3.r3.h">The Burnout Cycle</h3>
-              <p data-i18n="s3.r3.p">Without hope, exhaustion becomes a self-reinforcing loop that deepens over time.</p>
-            </div>
-          </div>
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="strug.kicker">Act I · The Struggle</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="strug.title">The Struggle</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="strug.lede">These are the storms that quietly drain hope from workplaces. Tap any that you've experienced — your selections save with your responses.</p>
+        <div class="struggle-grid reveal" id="struggleGrid" style="--d:.3s">
+          <button type="button" class="struggle-card" data-value="Uncertainty">
+            <span class="struggle-check" aria-hidden="true">✓</span>
+            <div class="struggle-icon">🌫️</div>
+            <div class="struggle-name" data-i18n="strug.1">Uncertainty</div>
+          </button>
+          <button type="button" class="struggle-card" data-value="Pressure">
+            <span class="struggle-check" aria-hidden="true">✓</span>
+            <div class="struggle-icon">⚡</div>
+            <div class="struggle-name" data-i18n="strug.2">Pressure</div>
+          </button>
+          <button type="button" class="struggle-card" data-value="Layoffs / Termination">
+            <span class="struggle-check" aria-hidden="true">✓</span>
+            <div class="struggle-icon">📉</div>
+            <div class="struggle-name" data-i18n="strug.3">Layoffs / Termination</div>
+          </button>
+          <button type="button" class="struggle-card" data-value="Impossible KPIs">
+            <span class="struggle-check" aria-hidden="true">✓</span>
+            <div class="struggle-icon">🎯</div>
+            <div class="struggle-name" data-i18n="strug.4">Impossible KPIs</div>
+          </button>
+          <button type="button" class="struggle-card" data-value="Leadership Conflict">
+            <span class="struggle-check" aria-hidden="true">✓</span>
+            <div class="struggle-icon">⚔️</div>
+            <div class="struggle-name" data-i18n="strug.5">Leadership Conflict</div>
+          </button>
         </div>
+        <div class="struggle-question reveal" style="--d:.55s">
+          <h3 data-i18n="strug.have">Have you experienced this?</h3>
+          <p data-i18n="strug.hint">Tap any that apply — your selections save with your responses.</p>
+        </div>
+        <input type="hidden" data-key="struggles_experienced" id="struggles_experienced" value="" />
       </div>
     </section>
 
-    <!-- ============== SLIDE 04 — HOPE CHECK-IN (ACTIVITY) ============== -->
-    <section class="slide slide-activity" data-slide="5" data-section="opening">
-      <div class="slide-inner">
-        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s4.kicker">Activity — Session 1</span></div>
-        <h2 class="slide-title-h2 reveal" data-i18n="s4.title">Hope Check-In Exercise</h2>
-        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s4.lede">
-          Take a moment to reflect on your current state. These questions help surface what is blocking your hope right now. Your answers are saved locally on your device.
-        </p>
-        <div class="q-stack">
-          <div class="q-card c-blue reveal" style="--d:.25s">
-            <div class="q-head"><span class="q-label" data-i18n="s4.q1.label">Question 1</span></div>
-            <label for="q_uncertain" class="q-question" data-i18n="s4.q1.q">What currently feels uncertain in my life or career?</label>
-            <textarea id="q_uncertain" data-key="q_uncertain" rows="4" placeholder="Take a breath. Write what comes to mind."></textarea>
-            <div class="q-meta"><span class="save-state" data-for="q_uncertain" data-i18n="s4.saved">Saved automatically</span></div>
-          </div>
-          <div class="q-card c-green reveal" style="--d:.4s">
-            <div class="q-head"><span class="q-label" data-i18n="s4.q2.label">Question 2</span></div>
-            <label for="q_blocked" class="q-question" data-i18n="s4.q2.q">Where do I feel mentally blocked or stuck right now?</label>
-            <textarea id="q_blocked" data-key="q_blocked" rows="4" placeholder="No need to fix anything yet. Just name it."></textarea>
-            <div class="q-meta"><span class="save-state" data-for="q_blocked">Saved automatically</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ============== SLIDE 5 — TWO EMPLOYEES STORY (was slide 6) ============== -->
 
-    <!-- ============== SLIDE 05 — OPTIMISM VS HOPE ============== -->
         <!-- ============== CINEMATIC SLIDE A — THE STORY ============== -->
-    <section class="slide slide-cinematic" data-slide="6" data-section="opening">
+    <section class="slide slide-cinematic" data-slide="5" data-section="opening">
       <div class="slide-inner">
         <div class="cin-kicker reveal" data-i18n="c1.kicker">Scene 1 · A True-to-Life Story</div>
         <h2 class="cin-headline reveal" style="--d:.18s">
@@ -317,7 +290,99 @@
       </div>
     </section>
 
-    <section class="slide" data-slide="7" data-section="science">
+    <section class="slide" data-slide="6" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s2.kicker">Workshop Overview</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s2.title">Workshop Objectives</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s2.lede">
+          By the end of this 3-hour session, participants will have developed practical tools to transform hope from a fleeting feeling into a daily practice.
+        </p>
+        <div class="obj-grid">
+          <div class="obj-card c-blue reveal" style="--d:.25s">
+            <div class="obj-num">1</div>
+            <h3 data-i18n="s2.c1.h">Understand Hope</h3>
+            <p data-i18n="s2.c1.p">Learn hope as a psychological skill, not just an emotion that comes and goes.</p>
+          </div>
+          <div class="obj-card c-green reveal" style="--d:.35s">
+            <div class="obj-num">2</div>
+            <h3 data-i18n="s2.c2.h">Build Through Action</h3>
+            <p data-i18n="s2.c2.p">Discover how hope is constructed through daily actions, not luck or circumstance.</p>
+          </div>
+          <div class="obj-card c-amber reveal" style="--d:.45s">
+            <div class="obj-num">3</div>
+            <h3 data-i18n="s2.c3.h">Rebuild Motivation</h3>
+            <p data-i18n="s2.c3.p">Develop personal tools to reignite motivation during uncertainty and pressure.</p>
+          </div>
+          <div class="obj-card c-coral reveal" style="--d:.55s">
+            <div class="obj-num">4</div>
+            <h3 data-i18n="s2.c4.h">Create an Action Plan</h3>
+            <p data-i18n="s2.c4.p">Leave with a concrete Personal Hope Action Plan for immediate implementation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 03 — WHY HOPE MATTERS ============== -->
+    <section class="slide" data-slide="7" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker"><span class="dot"></span> <span data-i18n="s3.kicker">Session 1 — Opening</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s3.title">Why Hope Matters Today</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s3.lede">
+          In a world of constant uncertainty, professionals feel stuck and mentally overloaded. Hope is not passive thinking — it is a learned psychological capability.
+        </p>
+        <div class="big-stat-list">
+          <div class="big-row c-coral reveal" style="--d:.25s">
+            <div class="big-num">01</div>
+            <div class="big-body">
+              <h3 data-i18n="s3.r1.h">Feeling Stuck</h3>
+              <p data-i18n="s3.r1.p">Professionals feel mentally blocked by uncertainty, pressure, and burnout.</p>
+            </div>
+          </div>
+          <div class="big-row c-amber reveal" style="--d:.4s">
+            <div class="big-num">02</div>
+            <div class="big-body">
+              <h3 data-i18n="s3.r2.h">Impact of Uncertainty</h3>
+              <p data-i18n="s3.r2.p">Rapid change and ambiguity drain motivation and erode confidence over time.</p>
+            </div>
+          </div>
+          <div class="big-row c-green reveal" style="--d:.55s">
+            <div class="big-num">03</div>
+            <div class="big-body">
+              <h3 data-i18n="s3.r3.h">The Burnout Cycle</h3>
+              <p data-i18n="s3.r3.p">Without hope, exhaustion becomes a self-reinforcing loop that deepens over time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 04 — HOPE CHECK-IN (ACTIVITY) ============== -->
+    <section class="slide slide-activity" data-slide="8" data-section="opening">
+      <div class="slide-inner">
+        <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s4.kicker">Activity — Session 1</span></div>
+        <h2 class="slide-title-h2 reveal" data-i18n="s4.title">Hope Check-In Exercise</h2>
+        <p class="slide-lede reveal" style="--d:.15s" data-i18n="s4.lede">
+          Take a moment to reflect on your current state. These questions help surface what is blocking your hope right now. Your answers are saved locally on your device.
+        </p>
+        <div class="q-stack">
+          <div class="q-card c-blue reveal" style="--d:.25s">
+            <div class="q-head"><span class="q-label" data-i18n="s4.q1.label">Question 1</span></div>
+            <label for="q_uncertain" class="q-question" data-i18n="s4.q1.q">What currently feels uncertain in my life or career?</label>
+            <textarea id="q_uncertain" data-key="q_uncertain" rows="4" placeholder="Take a breath. Write what comes to mind."></textarea>
+            <div class="q-meta"><span class="save-state" data-for="q_uncertain" data-i18n="s4.saved">Saved automatically</span></div>
+          </div>
+          <div class="q-card c-green reveal" style="--d:.4s">
+            <div class="q-head"><span class="q-label" data-i18n="s4.q2.label">Question 2</span></div>
+            <label for="q_blocked" class="q-question" data-i18n="s4.q2.q">Where do I feel mentally blocked or stuck right now?</label>
+            <textarea id="q_blocked" data-key="q_blocked" rows="4" placeholder="No need to fix anything yet. Just name it."></textarea>
+            <div class="q-meta"><span class="save-state" data-for="q_blocked">Saved automatically</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== SLIDE 05 — OPTIMISM VS HOPE ============== -->
+    <section class="slide" data-slide="9" data-section="science">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s5.kicker">Core Concept</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s5.title">Optimism <em>vs</em> Hope</h2>
@@ -357,7 +422,7 @@
     </section>
 
     <!-- ============== SLIDE 06 — SNYDER'S HOPE THEORY ============== -->
-    <section class="slide" data-slide="8" data-section="snyder">
+    <section class="slide" data-slide="10" data-section="snyder">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s6.kicker">Core Model — Session 2</span></div>
         <h2 class="slide-title-h2 reveal">Snyder's Hope Theory</h2>
@@ -392,7 +457,7 @@
     </section>
 
     <!-- ============== SLIDE 07 — MY HOPE MAP (ACTIVITY) ============== -->
-    <section class="slide slide-activity" data-slide="9" data-section="snyder">
+    <section class="slide slide-activity" data-slide="11" data-section="snyder">
       <div class="slide-inner">
         <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s7.kicker">Activity — Session 2</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s7.title">My Hope Map</h2>
@@ -445,7 +510,7 @@
     </section>
 
     <!-- ============== SLIDE 08 — FOUR HOPE-BUILDING HABITS ============== -->
-    <section class="slide" data-slide="10" data-section="daily">
+    <section class="slide" data-slide="12" data-section="daily">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s8.kicker">Session 3 — Daily Practice</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s8.title">Four Hope-Building Habits</h2>
@@ -478,7 +543,7 @@
     </section>
 
     <!-- ============== SLIDE 09 — REFRAMING EXERCISE (ACTIVITY) ============== -->
-    <section class="slide slide-activity" data-slide="11" data-section="daily">
+    <section class="slide slide-activity" data-slide="13" data-section="daily">
       <div class="slide-inner">
         <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s9.kicker">Activity — Session 3</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s9.title">Reframing Exercise</h2>
@@ -527,7 +592,7 @@
     </section>
 
     <!-- ============== SLIDE 10 — BREAK ============== -->
-    <section class="slide slide-break" data-slide="12" data-section="daily">
+    <section class="slide slide-break" data-slide="14" data-section="daily">
       <div class="slide-inner break-inner">
         <div class="break-circle">
           <div class="break-timer" id="breakTimer">15:00</div>
@@ -553,7 +618,7 @@
     </section>
 
     <!-- ============== CINEMATIC SLIDE B — THE PAUSE ============== -->
-    <section class="slide slide-pause" data-slide="13" data-section="opening">
+    <section class="slide slide-pause" data-slide="15" data-section="opening">
       <div class="slide-inner">
         <div class="pause-kicker reveal" data-i18n="c2.kicker">Pause · 60 Seconds</div>
         <h2 class="pause-headline reveal" style="--d:.22s" data-i18n="c2.head">Close your eyes.</h2>
@@ -566,7 +631,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 1 — WHEN HOPE DECLINES ============== -->
-    <section class="slide" data-slide="14" data-section="org">
+    <section class="slide" data-slide="16" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o1.kicker">Organizational Perspective</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o1.title">When Hope Declines</h2>
@@ -582,7 +647,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 2 — PUT YOUR ANSWER (ACTIVITY) ============== -->
-    <section class="slide slide-activity" data-slide="15" data-section="org">
+    <section class="slide slide-activity" data-slide="17" data-section="org">
       <div class="slide-inner">
         <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="o2.kicker">Activity — Reflect &amp; Share</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o2.title">Put Your Answer</h2>
@@ -598,7 +663,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 3 — HOPE IS NOT JUST POSITIVE THINKING ============== -->
-    <section class="slide" data-slide="16" data-section="org">
+    <section class="slide" data-slide="18" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o3.kicker">The Science</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o3.title">Hope Is Not Just Positive Thinking</h2>
@@ -628,7 +693,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 4 — RISK CHAIN (ACTIVITY: CHOOSE 3) ============== -->
-    <section class="slide slide-activity" data-slide="17" data-section="org">
+    <section class="slide slide-activity" data-slide="19" data-section="org">
       <div class="slide-inner">
         <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="o4.kicker">Activity — Choose Top 3</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o4.title">The Invisible Workplace Risk Chain</h2>
@@ -654,7 +719,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 5 — MENTAL HEALTH ============== -->
-    <section class="slide" data-slide="18" data-section="org">
+    <section class="slide" data-slide="20" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o5.kicker">Health Impact</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o5.title">Impact on Mental Health</h2>
@@ -671,7 +736,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 6 — PHYSICAL HEALTH ============== -->
-    <section class="slide" data-slide="19" data-section="org">
+    <section class="slide" data-slide="21" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o6.kicker">Health Impact</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o6.title">Impact on Physical Health</h2>
@@ -704,7 +769,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 7 — EMPLOYEE WELLBEING ============== -->
-    <section class="slide" data-slide="20" data-section="org">
+    <section class="slide" data-slide="22" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o7.kicker">People Impact</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o7.title">Employee Wellbeing Impact</h2>
@@ -749,7 +814,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 8 — ORG HEALTH COST ============== -->
-    <section class="slide" data-slide="21" data-section="org">
+    <section class="slide" data-slide="23" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o8.kicker">Business Impact</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o8.title">Organizational Health Cost</h2>
@@ -785,7 +850,7 @@
     </section>
 
     <!-- ============== ORG SLIDE 9 — COMPARE TWO ORGANIZATIONS ============== -->
-    <section class="slide" data-slide="22" data-section="org">
+    <section class="slide" data-slide="24" data-section="org">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="o9.kicker">The Contrast</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="o9.title">Compare Two Organizations</h2>
@@ -818,7 +883,7 @@
     </section>
 
     <!-- ============== CINEMATIC SLIDE C — TWO SCENES ============== -->
-    <section class="slide slide-cinematic" data-slide="23" data-section="hope-model">
+    <section class="slide slide-cinematic" data-slide="25" data-section="hope-model">
       <div class="slide-inner">
         <div class="cin-kicker reveal" data-i18n="c3.kicker">Intermission · Two Workplace Scenes</div>
         <h2 class="cin-headline reveal" style="--d:.18s" data-i18n="c3.title">What hope looks like under pressure</h2>
@@ -852,7 +917,7 @@
     </section>
 
     <!-- ============== SLIDE 11 — HOPE ACTION MODEL ============== -->
-    <section class="slide" data-slide="24" data-section="hope-model">
+    <section class="slide" data-slide="26" data-section="hope-model">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s11.kicker">Session 4 — Transformation</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s11.title">The HOPE Action Model</h2>
@@ -893,7 +958,7 @@
     </section>
 
     <!-- ============== CINEMATIC SLIDE D — THE SIMULATION ============== -->
-    <section class="slide slide-simulation slide-activity" data-slide="25" data-section="hope-model">
+    <section class="slide slide-simulation slide-activity" data-slide="27" data-section="hope-model">
       <div class="slide-inner">
         <div class="kicker kicker-activity">
           <span class="dot"></span>
@@ -928,7 +993,7 @@
     </section>
 
     <!-- ============== SLIDE 12 — PERSONAL HOPE ACTION PLAN (ACTIVITY) ============== -->
-    <section class="slide slide-activity" data-slide="26" data-section="hope-model">
+    <section class="slide slide-activity" data-slide="28" data-section="hope-model">
       <div class="slide-inner">
         <div class="kicker kicker-activity"><span class="dot"></span> <span data-i18n="s12.kicker">Main Workshop Output</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s12.title">Personal Hope Action Plan</h2>
@@ -976,7 +1041,7 @@
     </section>
 
     <!-- ============== SLIDE 13 — THREE REFLECTION QUESTIONS ============== -->
-    <section class="slide slide-activity" data-slide="27" data-section="hope-model">
+    <section class="slide slide-activity" data-slide="29" data-section="hope-model">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s13.kicker">Reflection — Session 4</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s13.title">Three Reflection Questions</h2>
@@ -1004,7 +1069,7 @@
     </section>
 
     <!-- ============== SLIDE 14 — HDPS ============== -->
-    <section class="slide" data-slide="28" data-section="hdps">
+    <section class="slide" data-slide="30" data-section="hdps">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s14.kicker">HR Framework</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s14.title">HOPE-Driven Performance System</h2>
@@ -1041,7 +1106,7 @@
     </section>
 
     <!-- ============== SLIDE 15 — HOPE-PERFORMANCE MATRIX ============== -->
-    <section class="slide" data-slide="29" data-section="hdps">
+    <section class="slide" data-slide="31" data-section="hdps">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s15.kicker">HR Framework</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s15.title">Hope-Performance Matrix</h2>
@@ -1115,7 +1180,7 @@
     </section>
 
     <!-- ============== SLIDE 16 — CLOSING ============== -->
-    <section class="slide slide-close" data-slide="30" data-section="hdps">
+    <section class="slide slide-close" data-slide="32" data-section="hdps">
       <div class="slide-inner close-inner">
         <div class="kicker reveal"><span class="dot"></span> <span data-i18n="s16.kicker">Closing Message</span></div>
         <h2 class="close-title reveal" style="--d:.15s" data-i18n="s16.title">
@@ -1154,7 +1219,7 @@
     </section>
 
     <!-- ============== SLIDE 17 — SUBMIT + SURVEY ============== -->
-    <section class="slide" data-slide="31" data-section="hdps">
+    <section class="slide" data-slide="33" data-section="hdps">
       <div class="slide-inner">
         <div class="kicker"><span class="dot"></span> <span data-i18n="s17.kicker">Final Step</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s17.title">Submit Your Action Plan</h2>
@@ -1278,7 +1343,7 @@
     </section>
 
     <!-- ============== SLIDE 18 — WORKSHOP SURVEY ============== -->
-    <section class="slide slide-survey" data-slide="32" data-section="hdps">
+    <section class="slide slide-survey" data-slide="34" data-section="hdps">
       <div class="slide-inner">
         <div class="kicker kicker-survey"><span class="dot"></span> <span data-i18n="s18.kicker">Workshop Feedback · 5 Questions</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s18.title">How was the workshop?</h2>
@@ -1395,7 +1460,7 @@
     </section>
 
     <!-- ============== SLIDE 19 — CERTIFICATE OF COMPLETION ============== -->
-    <section class="slide slide-certificate" data-slide="33" data-section="hdps">
+    <section class="slide slide-certificate" data-slide="35" data-section="hdps">
       <div class="slide-inner cert-inner">
         <div class="kicker kicker-cert"><span class="dot"></span> <span data-i18n="s19.kicker">Certificate of Completion</span></div>
         <h2 class="slide-title-h2 reveal" data-i18n="s19.title">Your Certificate is Ready</h2>
