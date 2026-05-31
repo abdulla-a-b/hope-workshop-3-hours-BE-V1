@@ -3636,28 +3636,60 @@ html[lang="bn"] [data-i18n] {
   margin: 0 0 60px;
 }
 .breathing-orb {
-  position: relative; width: 160px; height: 160px;
+  position: relative; width: 220px; height: 220px;
   display: flex; align-items: center; justify-content: center;
 }
-.breathing-orb::before, .breathing-orb::after {
-  content: ""; position: absolute; inset: 0; border-radius: 50%;
-  border: 1px solid rgba(123,140,245,.3);
-  animation: breathe 5s ease-in-out infinite;
+.breathing-ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border-width: 2.5px;
+  border-style: solid;
+  opacity: 0;
+  animation: breatheRing 5.5s ease-in-out infinite;
 }
-.breathing-orb::after { animation-delay: -2.5s; }
-@keyframes breathe {
-  0%, 100% { transform: scale(.5); opacity: 1; }
-  50% { transform: scale(1); opacity: .25; }
+/* Each ring is a different workshop-palette color and a different starting phase,
+   so the four colors visibly cascade outward — the "flow" the audience feels. */
+.breathing-ring-1 {
+  border-color: rgba(123, 140, 245, .9);          /* blue   */
+  box-shadow: 0 0 22px rgba(123, 140, 245, .55), inset 0 0 12px rgba(123, 140, 245, .35);
+  animation-delay: 0s;
 }
+.breathing-ring-2 {
+  border-color: rgba(109, 213, 197, .9);          /* teal   */
+  box-shadow: 0 0 22px rgba(109, 213, 197, .55), inset 0 0 12px rgba(109, 213, 197, .35);
+  animation-delay: -1.3s;
+}
+.breathing-ring-3 {
+  border-color: rgba(245, 185, 123, .9);          /* amber  */
+  box-shadow: 0 0 22px rgba(245, 185, 123, .55), inset 0 0 12px rgba(245, 185, 123, .35);
+  animation-delay: -2.7s;
+}
+.breathing-ring-4 {
+  border-color: rgba(245, 123, 140, .9);          /* coral  */
+  box-shadow: 0 0 22px rgba(245, 123, 140, .55), inset 0 0 12px rgba(245, 123, 140, .35);
+  animation-delay: -4.1s;
+}
+
+@keyframes breatheRing {
+  0%   { transform: scale(.18); opacity: 0; }
+  18%  { opacity: 1; }
+  60%  { transform: scale(1.0); opacity: .55; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+
 .breathing-orb-core {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: linear-gradient(135deg, #7b8cf5, #6dd5c5);
-  box-shadow: 0 0 30px rgba(123,140,245,.7);
-  animation: corePulse 5s ease-in-out infinite;
+  position: relative; z-index: 2;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9d3 0%, #f5b97b 35%, #f57b8c 70%, #7b8cf5 100%);
+  box-shadow:
+    0 0 16px rgba(245, 185, 123, .75),
+    0 0 38px rgba(245, 123, 140, .55),
+    0 0 60px rgba(123, 140, 245, .45);
+  animation: corePulse 5.5s ease-in-out infinite;
 }
 @keyframes corePulse {
-  0%,100% { transform: scale(.7); }
-  50% { transform: scale(1.4); }
+  0%, 100% { transform: scale(.7); filter: brightness(1); }
+  50%      { transform: scale(1.5); filter: brightness(1.4); }
 }
 .pause-counter {
   margin-top: 36px;
