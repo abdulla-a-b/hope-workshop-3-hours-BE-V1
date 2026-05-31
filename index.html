@@ -80,11 +80,23 @@
         <span class="lang-sep">·</span>
         <span class="lang-alt" id="langAlt">বাংলা</span>
       </button>
+      <div class="hopexp-chip" id="hopexpChip" title="Your Hope XP — earned through reflection and action" hidden>
+        <span class="hopexp-mark" aria-hidden="true">✦</span>
+        <span class="hopexp-num" id="hopexpNum">0</span>
+        <span class="hopexp-sep">·</span>
+        <span class="hopexp-rank" id="hopexpRank" data-i18n="xp.rank.0">Novice</span>
+      </div>
       <div class="topbar-progress">
         <span id="progressText">1 / 19</span>
       </div>
     </div>
   </header>
+
+  <!-- Badge popup mount point (cards slide in here on achievement unlock) -->
+  <div class="badge-popup-stack" id="badgePopupStack" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- Confetti burst mount (CSS-only celebration on major milestones) -->
+  <div class="confetti-stage" id="confettiStage" aria-hidden="true"></div>
 
   <!-- ============================================================
        SIDEBAR NAVIGATION
@@ -1619,11 +1631,16 @@
       // To REVOKE a batch: set active:false  OR  set an expires date in the past.
       // =====================================================================
       BATCH_CODES: [
-        { name: "Batch 1", hash: "31093e279a4ea9e31b0dc9549d1ba82c9fd6300d8890773313d926a1d87d9b2e", expires: "", active: true },
-        { name: "Batch 2", hash: "ae69f384d400dd49242060ec881b9131e7b39438b0bbadff3dec4df2a02053f5", expires: "", active: true },
-        { name: "Batch 3", hash: "8cd147de7bb27190c23c525e05cdfff63d4cdad79ade7cc415de1e8b4074f9dc", expires: "", active: true }
+        // Example below is the code "HOPE2026" (the original default).
+        { name: "Demo / Default", hash: "cca889e821394424ab4139f713652c755f0eff89f24c9f9d77defcfad5a11979", expires: "", active: true }
+        // , { name: "Acme Corp — Mar 2026", hash: "PASTE_HASH_HERE", expires: "2026-04-30", active: true }
+        // , { name: "Beta Ltd — Apr 2026",  hash: "PASTE_HASH_HERE", expires: "2026-05-31", active: true }
       ],
-      ADMIN_PASSWORD_HASH: "5233182b1bf19b990c949c77c2c0a7f8572bff6688fcedc0707cc5d9bd464168",
+
+      // Master admin code — ALWAYS works, never expires. Keep this private; it
+      // lets you (the facilitator) into any batch for testing/support.
+      // Default is "HOPE2026". Change it via admin.html. Leave "" to disable.
+      ADMIN_PASSWORD_HASH: "cca889e821394424ab4139f713652c755f0eff89f24c9f9d77defcfad5a11979",
 
       // Certificate issuer
       ISSUER_NAME: "ProfessionalsTalk",
