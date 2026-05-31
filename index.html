@@ -201,8 +201,24 @@
         <div class="q-stack reveal" style="--d:.55s">
           <div class="q-card c-coral">
             <label for="lose_hope_answer" class="q-question" data-i18n="prob.label">Your observations</label>
-            <textarea id="lose_hope_answer" data-key="lose_hope_answer" rows="4" data-i18n-placeholder="prob.ph" placeholder="e.g. People stop volunteering ideas, sick leave rises, the best ones quietly leave…"></textarea>
-            <div class="q-meta"><span class="save-state" data-for="lose_hope_answer" data-i18n="s4.saved">Saved automatically</span></div>
+            <textarea id="lose_hope_answer" data-key="lose_hope_answer" rows="3" data-i18n-placeholder="prob.ph" placeholder="e.g. People stop volunteering ideas, sick leave rises, the best ones quietly leave…"></textarea>
+            <div class="share-row">
+              <span class="save-state" data-for="lose_hope_answer" data-i18n="s4.saved">Saved automatically</span>
+              <button type="button" class="btn-share" id="shareLoseHopeBtn">
+                <span data-i18n="prob.share">Share with the room</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="voices-wall reveal" style="--d:.75s" id="voicesWall" data-field="lose_hope_answer">
+          <div class="voices-header">
+            <span class="voices-live-dot" aria-hidden="true"></span>
+            <span data-i18n="prob.voices">Voices from the room</span>
+            <span class="voices-count" id="voicesCount">0</span>
+          </div>
+          <div class="voices-grid" id="voicesGrid">
+            <div class="voices-empty" data-i18n="prob.empty">As people share, their words will appear here — live.</div>
           </div>
         </div>
       </div>
@@ -1576,7 +1592,7 @@
   <script>
     window.HOPE_CONFIG = {
       // After deploying Code.gs as a Web App, paste the /exec URL here:
-      GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxHWEwiSQklaQOGeoxkLTxzP28aTIjmvrstEISsXLtezFmdctWKW3N93mZzxTB1SNAO3g/exec",
+      GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbx_1mXowio4CNkEt4YK4c0-EcIWjrpZfi7ARekEqmZ9MQ6wU0e9LPE6fx4lh18eythBBg/exec",
       // Workshop metadata
       WORKSHOP_ID: "hope-as-a-skill-2026",
       WORKSHOP_NAME: "Hope as a Skill — 3hr Workshop",
