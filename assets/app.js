@@ -1463,6 +1463,28 @@
       "strug.5": "Leadership Conflict",
       "strug.have": "Have you experienced this?",
       "strug.hint": "Tap any that apply — your selections save with your responses.",
+      // ---- HopeXP gamification ----
+      "xp.rank.0": "Novice",
+      "xp.rank.1": "Explorer",
+      "xp.rank.2": "Builder",
+      "xp.rank.3": "Strategist",
+      "xp.rank.4": "Architect of Hope",
+      "xp.badge.unlocked": "Achievement Unlocked",
+      "xp.badge.storyteller.n": "Storyteller",
+      "xp.badge.storyteller.d": "Shared your voice with the room.",
+      "xp.badge.explorer.n": "Explorer",
+      "xp.badge.explorer.d": "Recognised three or more workplace struggles.",
+      "xp.badge.mapper.n": "Hope Mapper",
+      "xp.badge.mapper.d": "Charted a goal, two pathways, and an action.",
+      "xp.badge.reframer.n": "Reframer",
+      "xp.badge.reframer.d": "Turned three negative thoughts into hopeful ones.",
+      "xp.badge.strategist.n": "Strategist",
+      "xp.badge.strategist.d": "Built a team hope-strategy under pressure.",
+      "xp.badge.hero.n": "Action Hero",
+      "xp.badge.hero.d": "Committed to one real action this week.",
+      "xp.badge.architect.n": "Architect of Hope",
+      "xp.badge.architect.d": "Completed the workshop and submitted your plan.",
+
     },
     bn: {
       "brand": "HOPE ওয়ার্কশপ",
@@ -1914,6 +1936,28 @@
       "strug.5": "নেতৃত্বের দ্বন্দ্ব",
       "strug.have": "আপনি কি এটি অনুভব করেছেন?",
       "strug.hint": "যেগুলো প্রযোজ্য তাতে চাপুন—আপনার নির্বাচন আপনার উত্তরের সাথে সংরক্ষিত হবে।",
+      // ---- HopeXP gamification ----
+      "xp.rank.0": "শিক্ষানবিশ",
+      "xp.rank.1": "অনুসন্ধানী",
+      "xp.rank.2": "নির্মাতা",
+      "xp.rank.3": "কৌশলবিদ",
+      "xp.rank.4": "আশার স্থপতি",
+      "xp.badge.unlocked": "অর্জন আনলক হলো",
+      "xp.badge.storyteller.n": "গল্পকার",
+      "xp.badge.storyteller.d": "সকলের সাথে নিজের কণ্ঠস্বর শেয়ার করেছেন।",
+      "xp.badge.explorer.n": "অনুসন্ধানী",
+      "xp.badge.explorer.d": "কর্মক্ষেত্রের তিন বা ততোধিক সংগ্রাম শনাক্ত করেছেন।",
+      "xp.badge.mapper.n": "আশার মানচিত্রকার",
+      "xp.badge.mapper.d": "একটি লক্ষ্য, দুটি পথ ও একটি কাজ মানচিত্রিত করেছেন।",
+      "xp.badge.reframer.n": "পুনর্বিন্যাসকারী",
+      "xp.badge.reframer.d": "তিনটি নেতিবাচক চিন্তাকে আশাবাদী চিন্তায় রূপান্তর করেছেন।",
+      "xp.badge.strategist.n": "কৌশলবিদ",
+      "xp.badge.strategist.d": "চাপের মধ্যে একটি দলগত আশা-কৌশল তৈরি করেছেন।",
+      "xp.badge.hero.n": "কর্ম-নায়ক",
+      "xp.badge.hero.d": "এই সপ্তাহের জন্য একটি বাস্তব কাজে প্রতিশ্রুতি দিয়েছেন।",
+      "xp.badge.architect.n": "আশার স্থপতি",
+      "xp.badge.architect.d": "কর্মশালা সম্পন্ন করেছেন এবং আপনার পরিকল্পনা জমা দিয়েছেন।",
+
     },
   };
 
@@ -2841,4 +2885,290 @@
     "background: #7b8cf5; color: white; font-weight: bold; padding: 4px 8px; border-radius: 4px;",
     "v" + (window.HOPE_CONFIG?.VERSION || "1.0.0")
   );
+  // ═══════════════════════════════════════════════════════════════════════
+  //  HopeXP GAMIFICATION LAYER
+  //  Live positive-reinforcement system that fires while participants work.
+  //  XP triggers are wired into existing element interactions (no need to
+  //  modify every handler). Badges unlock at milestones with a sliding card +
+  //  optional confetti burst. State persists across reloads via localStorage.
+  // ═══════════════════════════════════════════════════════════════════════
+  const HXP = (function () {
+    const KEY = "hope_xp_v1";
+    const ranks = [
+      { min: 0,   key: "xp.rank.0", label: "Novice" },
+      { min: 25,  key: "xp.rank.1", label: "Explorer" },
+      { min: 70,  key: "xp.rank.2", label: "Builder" },
+      { min: 140, key: "xp.rank.3", label: "Strategist" },
+      { min: 220, key: "xp.rank.4", label: "Architect of Hope" }
+    ];
+    const BADGES = {
+      storyteller:    { color: ["#f57b8c", "#f5b97b"], icon: "✺", xp: 15, nameKey: "xp.badge.storyteller.n",    descKey: "xp.badge.storyteller.d" },
+      explorer:       { color: ["#7b8cf5", "#6dd5c5"], icon: "✦", xp: 15, nameKey: "xp.badge.explorer.n",       descKey: "xp.badge.explorer.d" },
+      hopeMapper:     { color: ["#6dd5c5", "#a3d977"], icon: "◈", xp: 25, nameKey: "xp.badge.mapper.n",         descKey: "xp.badge.mapper.d" },
+      reframer:       { color: ["#c79bf5", "#7b8cf5"], icon: "↻", xp: 20, nameKey: "xp.badge.reframer.n",       descKey: "xp.badge.reframer.d" },
+      strategist:     { color: ["#f5b97b", "#f57b8c"], icon: "◆", xp: 30, nameKey: "xp.badge.strategist.n",     descKey: "xp.badge.strategist.d" },
+      actionHero:     { color: ["#a3d977", "#6dd5c5"], icon: "★", xp: 35, nameKey: "xp.badge.hero.n",           descKey: "xp.badge.hero.d" },
+      architect:      { color: ["#f5b97b", "#c79bf5"], icon: "◉", xp: 50, nameKey: "xp.badge.architect.n",      descKey: "xp.badge.architect.d" }
+    };
+
+    // ── Persisted state ──
+    function load() {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return { xp: 0, badges: [], firedTriggers: [] };
+    }
+    function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+    const state = load();
+
+    // ── DOM ──
+    const chip = document.getElementById("hopexpChip");
+    const numEl = document.getElementById("hopexpNum");
+    const rankEl = document.getElementById("hopexpRank");
+    const stack = document.getElementById("badgePopupStack");
+    const confettiStage = document.getElementById("confettiStage");
+
+    function currentRank() {
+      let r = ranks[0];
+      for (const t of ranks) if (state.xp >= t.min) r = t;
+      return r;
+    }
+    function render() {
+      if (!chip) return;
+      chip.hidden = false;
+      if (numEl) numEl.textContent = String(state.xp);
+      if (rankEl) {
+        const r = currentRank();
+        rankEl.setAttribute("data-i18n", r.key);
+        rankEl.textContent = r.label;            // fallback; applyI18n overrides
+      }
+      if (typeof window.__applyI18n === "function") window.__applyI18n();
+    }
+    function flashChip() {
+      if (!chip) return;
+      chip.classList.add("boost");
+      setTimeout(() => chip.classList.remove("boost"), 700);
+    }
+
+    // ── Award XP ──
+    function award(amount, sourceEl, triggerKey) {
+      // De-dupe: each trigger key only fires once per session
+      if (triggerKey) {
+        if (state.firedTriggers.includes(triggerKey)) return;
+        state.firedTriggers.push(triggerKey);
+      }
+      const beforeRank = currentRank();
+      state.xp += amount;
+      const afterRank = currentRank();
+      save();
+      render();
+      flashChip();
+      showFloater(amount, sourceEl);
+      if (afterRank !== beforeRank) {
+        // Rank up — small celebration
+        burstConfetti(18);
+      }
+    }
+
+    function showFloater(amount, sourceEl) {
+      const el = document.createElement("div");
+      el.className = "xp-floater";
+      el.textContent = "+" + amount + " XP";
+      // Anchor to source if available, else to the chip
+      const anchor = (sourceEl && sourceEl.getBoundingClientRect) ? sourceEl : chip;
+      if (anchor) {
+        const r = anchor.getBoundingClientRect();
+        el.style.left = (r.left + r.width / 2 - 24) + "px";
+        el.style.top  = (r.top - 6) + "px";
+      } else {
+        el.style.right = "20px"; el.style.top = "70px";
+      }
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1500);
+    }
+
+    // ── Unlock a badge ──
+    function unlock(id, sourceEl) {
+      if (state.badges.includes(id)) return;
+      const b = BADGES[id];
+      if (!b) return;
+      state.badges.push(id);
+      save();
+      award(b.xp, sourceEl, "badge_xp_" + id);
+      showBadge(id);
+      burstConfetti(36);
+    }
+
+    function showBadge(id) {
+      if (!stack) return;
+      const b = BADGES[id];
+      const card = document.createElement("div");
+      card.className = "badge-card";
+      card.style.setProperty("--badge-c1", b.color[0]);
+      card.style.setProperty("--badge-c2", b.color[1]);
+      card.innerHTML =
+        '<div class="badge-card-head">' +
+          '<div class="badge-icon">' + b.icon + '</div>' +
+          '<div class="badge-label" data-i18n="xp.badge.unlocked">Achievement Unlocked</div>' +
+          '<div class="badge-xp-pill">+' + b.xp + ' XP</div>' +
+        '</div>' +
+        '<h4 class="badge-name" data-i18n="' + b.nameKey + '">' + id + '</h4>' +
+        '<p class="badge-desc" data-i18n="' + b.descKey + '"></p>';
+      stack.appendChild(card);
+      if (typeof window.__applyI18n === "function") window.__applyI18n();
+      setTimeout(() => {
+        card.classList.add("leaving");
+        setTimeout(() => card.remove(), 420);
+      }, 4800);
+    }
+
+    // ── Confetti burst (CSS-only, palette colors) ──
+    function burstConfetti(count) {
+      if (!confettiStage) return;
+      const palette = ["#7b8cf5", "#6dd5c5", "#f5b97b", "#f57b8c", "#a3d977", "#c79bf5"];
+      confettiStage.classList.remove("active");
+      // force reflow so animation restarts
+      void confettiStage.offsetWidth;
+      confettiStage.classList.add("active");
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement("div");
+        p.className = "confetti-piece";
+        const ang1 = Math.random() * Math.PI * 2;
+        const dist1 = 80 + Math.random() * 120;
+        const cx1 = Math.cos(ang1) * dist1;
+        const cy1 = Math.sin(ang1) * dist1 - 40;
+        const cx2 = cx1 + (Math.random() - 0.5) * 200;
+        const cy2 = cy1 + 200 + Math.random() * 200;
+        p.style.setProperty("--cx1", cx1 + "px");
+        p.style.setProperty("--cy1", cy1 + "px");
+        p.style.setProperty("--cx2", cx2 + "px");
+        p.style.setProperty("--cy2", cy2 + "px");
+        p.style.background = palette[i % palette.length];
+        p.style.animationDelay = (Math.random() * 0.15) + "s";
+        confettiStage.appendChild(p);
+      }
+      setTimeout(() => { confettiStage.innerHTML = ""; }, 2400);
+    }
+
+    // ── Wire XP triggers to existing elements ──
+    function wireTriggers() {
+      // 1) Textareas: first time content lands & blurs → +10 XP, one-time per field
+      document.querySelectorAll('textarea[data-key]').forEach(ta => {
+        ta.addEventListener("blur", () => {
+          if ((ta.value || "").trim().length >= 8) {
+            award(10, ta, "ta_" + ta.id);
+          }
+        });
+      });
+
+      // 2) Selectable cards (struggles + risk chain): +5 per pick
+      document.querySelectorAll('.struggle-card').forEach(c => {
+        c.addEventListener("click", () => {
+          if (c.classList.contains("selected")) {
+            award(5, c, "struggle_" + c.getAttribute("data-value"));
+          }
+        });
+      });
+      document.querySelectorAll('#riskChain .risk-step').forEach(s => {
+        s.addEventListener("click", () => {
+          if (s.classList.contains("selected")) {
+            award(5, s, "risk_" + s.getAttribute("data-value"));
+          }
+        });
+      });
+
+      // 3) Share button on slide 3 → Storyteller badge
+      const shareBtn2 = document.getElementById("shareLoseHopeBtn");
+      if (shareBtn2) {
+        shareBtn2.addEventListener("click", () => {
+          const ta = document.getElementById("lose_hope_answer");
+          if (ta && (ta.value || "").trim().length >= 4) {
+            unlock("storyteller", shareBtn2);
+          }
+        });
+      }
+
+      // 4) Struggle multi-select → Explorer badge after 3+ picks
+      const struggleGrid2 = document.getElementById("struggleGrid");
+      if (struggleGrid2) {
+        struggleGrid2.addEventListener("click", () => {
+          const picked = struggleGrid2.querySelectorAll(".struggle-card.selected").length;
+          if (picked >= 3) unlock("explorer", struggleGrid2);
+        });
+      }
+
+      // 5) Hope Map (map_*) — all 5 fields filled → Hope Mapper
+      const mapFields = ["map_goal", "map_path_a", "map_path_b", "map_action"];
+      function checkMapper() {
+        const allFilled = mapFields.every(id => {
+          const el = document.getElementById(id);
+          return el && (el.value || "").trim().length >= 3;
+        });
+        if (allFilled) unlock("hopeMapper", document.getElementById("map_goal"));
+      }
+      mapFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("blur", checkMapper);
+      });
+
+      // 6) Reframing — completing 3 negative→positive pairs → Reframer
+      const reframeFields = ["reframe_neg_1","reframe_neg_2","reframe_neg_3","reframe_pos_1","reframe_pos_2","reframe_pos_3"];
+      function checkReframer() {
+        const allFilled = reframeFields.every(id => {
+          const el = document.getElementById(id);
+          return el && (el.value || "").trim().length >= 3;
+        });
+        if (allFilled) unlock("reframer", document.getElementById("reframe_pos_1"));
+      }
+      reframeFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("blur", checkReframer);
+      });
+
+      // 7) Simulation textarea filled → Strategist
+      const sim = document.getElementById("simulation_plan");
+      if (sim) {
+        sim.addEventListener("blur", () => {
+          if ((sim.value || "").trim().length >= 20) unlock("strategist", sim);
+        });
+      }
+
+      // 8) Personal Hope Action Plan complete → Action Hero
+      const planFields = ["plan_goal", "plan_barrier", "plan_sol_a", "plan_action"];
+      function checkActionHero() {
+        const allFilled = planFields.every(id => {
+          const el = document.getElementById(id);
+          return el && (el.value || "").trim().length >= 3;
+        });
+        if (allFilled) unlock("actionHero", document.getElementById("plan_action"));
+      }
+      planFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("blur", checkActionHero);
+      });
+
+      // 9) Final submission → Architect of Hope
+      const submitBtn = document.getElementById("submitBtn");
+      if (submitBtn) {
+        submitBtn.addEventListener("click", () => {
+          // Defer so submission validation runs first
+          setTimeout(() => {
+            const status = document.getElementById("submitStatus");
+            if (status && (status.classList.contains("success") || /submitted/i.test(status.textContent))) {
+              unlock("architect", submitBtn);
+            }
+          }, 600);
+        });
+      }
+    }
+
+    // Initial render + wire triggers on load
+    render();
+    if (document.readyState !== "loading") wireTriggers();
+    else document.addEventListener("DOMContentLoaded", wireTriggers);
+
+    return { award, unlock, render };
+  })();
+
 })();
