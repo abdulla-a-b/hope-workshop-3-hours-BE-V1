@@ -1619,11 +1619,11 @@
       // To REVOKE a batch: set active:false  OR  set an expires date in the past.
       // =====================================================================
       BATCH_CODES: [
-        // Example below is the code "HOPE2026" (the original default).
-        { name: "Demo / Default", hash: "cca889e821394424ab4139f713652c755f0eff89f24c9f9d77defcfad5a11979", expires: "", active: true }
-        // , { name: "Acme Corp — Mar 2026", hash: "PASTE_HASH_HERE", expires: "2026-04-30", active: true }
-        // , { name: "Beta Ltd — Apr 2026",  hash: "PASTE_HASH_HERE", expires: "2026-05-31", active: true }
+        { name: "Batch 1", hash: "31093e279a4ea9e31b0dc9549d1ba82c9fd6300d8890773313d926a1d87d9b2e", expires: "", active: true },
+        { name: "Batch 2", hash: "ae69f384d400dd49242060ec881b9131e7b39438b0bbadff3dec4df2a02053f5", expires: "", active: true },
+        { name: "Batch 3", hash: "8cd147de7bb27190c23c525e05cdfff63d4cdad79ade7cc415de1e8b4074f9dc", expires: "", active: true }
       ],
+      ADMIN_PASSWORD_HASH: "5233182b1bf19b990c949c77c2c0a7f8572bff6688fcedc0707cc5d9bd464168",
 
       // Master admin code — ALWAYS works, never expires. Keep this private; it
       // lets you (the facilitator) into any batch for testing/support.
