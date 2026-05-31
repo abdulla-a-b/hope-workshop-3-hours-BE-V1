@@ -3993,3 +3993,124 @@ html[lang="bn"] [data-i18n] {
 @media (max-width: 640px) {
   .slide-cold-open .slide-inner { padding: 36px 24px 48px; }
 }
+
+/* ============================================================================
+   ╔══════════════════════════════════════════════════════════════════════╗
+   ║  SLIDE 2 — CINEMATIC TITLE CARD                                      ║
+   ║  Animated colour-contrast subtitle: Motivation · Meaning · Future    ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   ============================================================================ */
+
+/* Cinematic vignette on the title slide */
+.slide-title {
+  position: relative;
+  overflow: hidden;
+}
+.slide-title::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.45) 100%);
+  z-index: 1;
+}
+.slide-title .slide-inner { position: relative; z-index: 2; }
+
+/* Subtle letterbox shadow band at top + bottom */
+.slide-title .slide-inner::before {
+  content: ""; position: absolute; top: -56px; left: -56px; right: -56px; height: 36px;
+  background: linear-gradient(to bottom, rgba(2,3,10,.7), transparent);
+  pointer-events: none;
+}
+.slide-title .slide-inner::after {
+  content: ""; position: absolute; bottom: -64px; left: -56px; right: -56px; height: 36px;
+  background: linear-gradient(to top, rgba(2,3,10,.6), transparent);
+  pointer-events: none;
+}
+
+/* Bigger, more cinematic hero typography */
+.slide-title .hero-title {
+  font-size: clamp(64px, 10vw, 140px);
+  line-height: .92;
+  letter-spacing: -.045em;
+  text-shadow:
+    0 0 50px rgba(123,140,245,.18),
+    0 0 120px rgba(109,213,197,.12);
+}
+.slide-title .hero-sub {
+  font-size: clamp(20px, 2.6vw, 30px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -.01em;
+  max-width: 920px;
+  color: rgba(255,255,255,.78);
+}
+
+/* ── The colour-contrast animated words ── */
+.word-accent {
+  display: inline-block;
+  position: relative;
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-style: italic;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0;
+  padding: 0 .06em;
+}
+.word-amber { background-image: linear-gradient(135deg, #f5b97b 0%, #f57b8c 100%); }
+.word-teal  { background-image: linear-gradient(135deg, #6dd5c5 0%, #a3d977 100%); }
+.word-blue  { background-image: linear-gradient(135deg, #7b8cf5 0%, #6dd5c5 100%); }
+
+/* The muted closing phrase contrasts with the bright words */
+.hero-sub-muted {
+  color: rgba(255,255,255,.45);
+  font-style: italic;
+  opacity: 0;
+  animation: subFadeIn 1s ease 2s forwards;
+}
+[data-theme="light"] .hero-sub-muted { color: rgba(10,14,26,.45); }
+
+/* Cinematic sequential entrance — each word fades in and gradient-glows */
+.slide.active .word-amber {
+  animation:
+    wordAccentIn 1.1s cubic-bezier(.16,.84,.44,1) .9s both,
+    wordGlowAmber 5s ease-in-out 2.3s infinite;
+}
+.slide.active .word-teal {
+  animation:
+    wordAccentIn 1.1s cubic-bezier(.16,.84,.44,1) 1.25s both,
+    wordGlowTeal 5s ease-in-out 2.6s infinite;
+}
+.slide.active .word-blue {
+  animation:
+    wordAccentIn 1.1s cubic-bezier(.16,.84,.44,1) 1.6s both,
+    wordGlowBlue 5s ease-in-out 2.9s infinite;
+}
+
+@keyframes wordAccentIn {
+  0%   { opacity: 0; transform: translateY(10px) scale(.94); filter: blur(5px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes wordGlowAmber {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(245,185,123,.35)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(245,185,123,.7)); }
+}
+@keyframes wordGlowTeal {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(109,213,197,.35)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(109,213,197,.7)); }
+}
+@keyframes wordGlowBlue {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(123,140,245,.35)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(123,140,245,.7)); }
+}
+@keyframes subFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Light theme — keep the gradient text visible against cream */
+[data-theme="light"] .slide-title::after {
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(220,210,190,.5) 100%);
+}
+[data-theme="light"] .slide-title .hero-title { text-shadow: 0 0 30px rgba(123,140,245,.12); }
