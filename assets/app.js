@@ -872,7 +872,7 @@
       "badge.optional": "(optional)",
       // ---- Content (auto-generated) ----
       "s1.kicker": "Workshop Presentation",
-      "s1.sub": "Rebuilding <span class=\"word-accent word-amber\">Motivation</span>, <span class=\"word-accent word-teal\">Meaning</span>, and <span class=\"word-accent word-blue\">Future Confidence</span> <span class=\"hero-sub-muted\">in Uncertain Times</span>",
+      "s1.sub": "<span class=\"hero-chunk hero-chunk-1\">Rebuilding</span> <span class=\"hero-chunk hero-chunk-2\"><span class=\"word-accent word-amber\">Motivation</span>,</span> <span class=\"hero-chunk hero-chunk-3\"><span class=\"word-accent word-teal\">Meaning</span>,</span> <span class=\"hero-chunk hero-chunk-4\">and <span class=\"word-accent word-blue\">Future Confidence</span></span> <span class=\"hero-chunk hero-chunk-5 hero-sub-muted\">in Uncertain Times</span>",
       "s1.metak.duration": "Duration",
       "s1.metav.duration": "3 Hours",
       "s1.metak.format": "Format",
@@ -1302,7 +1302,7 @@
       "badge.optional": "(ঐচ্ছিক)",
       // ---- Content (auto-generated) ----
       "s1.kicker": "ওয়ার্কশপ উপস্থাপনা",
-      "s1.sub": "অনিশ্চিত সময়ে <span class=\"word-accent word-amber\">অনুপ্রেরণা</span>, <span class=\"word-accent word-teal\">অর্থ</span> ও <span class=\"word-accent word-blue\">ভবিষ্যৎ আত্মবিশ্বাস</span> <span class=\"hero-sub-muted\">পুনর্গঠন</span>",
+      "s1.sub": "<span class=\"hero-chunk hero-chunk-1 hero-sub-muted\">অনিশ্চিত সময়ে</span> <span class=\"hero-chunk hero-chunk-2\"><span class=\"word-accent word-amber\">অনুপ্রেরণা</span>,</span> <span class=\"hero-chunk hero-chunk-3\"><span class=\"word-accent word-teal\">অর্থ</span></span> <span class=\"hero-chunk hero-chunk-4\">ও <span class=\"word-accent word-blue\">ভবিষ্যৎ আত্মবিশ্বাস</span></span> <span class=\"hero-chunk hero-chunk-5\">পুনর্গঠন</span>",
       "s1.metak.duration": "সময়কাল",
       "s1.metav.duration": "৩ ঘণ্টা",
       "s1.metak.format": "ধরন",
