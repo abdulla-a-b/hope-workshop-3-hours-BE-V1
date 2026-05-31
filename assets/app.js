@@ -738,6 +738,33 @@
   }
   surveyChipInputs.forEach((c) => c.addEventListener("change", syncSurveyTopics));
 
+
+  // ─── Slide 4: "The Struggle" — multi-select cards ───────────────────────
+  // Tapping a card toggles its selected state. Selected values save to the
+  // hidden field which submits with the rest of the responses.
+  const struggleGrid = document.getElementById("struggleGrid");
+  const struggleHidden = document.getElementById("struggles_experienced");
+  if (struggleGrid && struggleHidden) {
+    const cards = Array.from(struggleGrid.querySelectorAll(".struggle-card"));
+    function syncStruggle() {
+      const sel = cards.filter(c => c.classList.contains("selected"))
+                       .map(c => c.getAttribute("data-value"));
+      struggleHidden.value = sel.join(", ");
+      struggleHidden.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+    cards.forEach(card => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("selected");
+        syncStruggle();
+      });
+    });
+    // Restore saved selections
+    if (struggleHidden.value) {
+      const saved = struggleHidden.value.split(",").map(s => s.trim());
+      cards.forEach(c => { if (saved.includes(c.getAttribute("data-value"))) c.classList.add("selected"); });
+    }
+  }
+
   // Risk-chain "choose top 3" — boxes in the chain are directly clickable.
   // Selected stages (max 3) appear in the "Your Top 3" area below and save
   // to the hidden field (canonical English values for consistent analytics).
@@ -1269,6 +1296,24 @@
       "cold.tagline": "Three hours. A skill that lasts a lifetime.",
       "cold.chapter": "Chapter One",
 
+      // ---- New slides 3 & 4 (problem + struggle) ----
+      "prob.kicker": "Act I · The Problem",
+      "prob.q1": "What happens",
+      "prob.q2": "when employees",
+      "prob.q3": "lose hope?",
+      "prob.sub": "Take 60 seconds. Write what you've seen — one phrase or several, separated by commas.",
+      "prob.label": "Your observations",
+      "prob.ph": "e.g. People stop volunteering ideas, sick leave rises, the best ones quietly leave…",
+      "strug.kicker": "Act I · The Struggle",
+      "strug.title": "The Struggle",
+      "strug.lede": "These are the storms that quietly drain hope from workplaces. Tap any that you've experienced — your selections save with your responses.",
+      "strug.1": "Uncertainty",
+      "strug.2": "Pressure",
+      "strug.3": "Layoffs / Termination",
+      "strug.4": "Impossible KPIs",
+      "strug.5": "Leadership Conflict",
+      "strug.have": "Have you experienced this?",
+      "strug.hint": "Tap any that apply — your selections save with your responses.",
     },
     bn: {
       "brand": "HOPE ওয়ার্কশপ",
@@ -1699,6 +1744,24 @@
       "cold.tagline": "তিন ঘণ্টা। একটি দক্ষতা—সারাজীবন।",
       "cold.chapter": "অধ্যায় এক",
 
+      // ---- New slides 3 & 4 (problem + struggle) ----
+      "prob.kicker": "অঙ্ক ১ · সমস্যা",
+      "prob.q1": "কী ঘটে",
+      "prob.q2": "যখন কর্মীরা",
+      "prob.q3": "আশা হারিয়ে ফেলে?",
+      "prob.sub": "৬০ সেকেন্ড নিন। যা দেখেছেন তা লিখুন—একটি বাক্য বা একাধিক, কমা দিয়ে আলাদা করে।",
+      "prob.label": "আপনার পর্যবেক্ষণ",
+      "prob.ph": "যেমন: মানুষ নতুন আইডিয়া দেওয়া বন্ধ করে, অসুস্থতাজনিত ছুটি বাড়ে, ভালো কর্মীরা চুপচাপ চলে যায়…",
+      "strug.kicker": "অঙ্ক ১ · সংগ্রাম",
+      "strug.title": "সংগ্রাম",
+      "strug.lede": "এগুলোই সেই ঝড়, যা নীরবে কর্মক্ষেত্র থেকে আশা শুষে নেয়। যা যা অনুভব করেছেন তাতে চাপুন—আপনার নির্বাচন আপনার উত্তরের সাথে সংরক্ষিত হবে।",
+      "strug.1": "অনিশ্চয়তা",
+      "strug.2": "চাপ",
+      "strug.3": "ছাঁটাই / চাকরিচ্যুতি",
+      "strug.4": "অসম্ভব KPI",
+      "strug.5": "নেতৃত্বের দ্বন্দ্ব",
+      "strug.have": "আপনি কি এটি অনুভব করেছেন?",
+      "strug.hint": "যেগুলো প্রযোজ্য তাতে চাপুন—আপনার নির্বাচন আপনার উত্তরের সাথে সংরক্ষিত হবে।",
     },
   };
 
