@@ -872,7 +872,7 @@
       "badge.optional": "(optional)",
       // ---- Content (auto-generated) ----
       "s1.kicker": "Workshop Presentation",
-      "s1.sub": "Rebuilding Motivation, Meaning, and Future Confidence in Uncertain Times",
+      "s1.sub": "Rebuilding <span class=\"word-accent word-amber\">Motivation</span>, <span class=\"word-accent word-teal\">Meaning</span>, and <span class=\"word-accent word-blue\">Future Confidence</span> <span class=\"hero-sub-muted\">in Uncertain Times</span>",
       "s1.metak.duration": "Duration",
       "s1.metav.duration": "3 Hours",
       "s1.metak.format": "Format",
@@ -1302,7 +1302,7 @@
       "badge.optional": "(ঐচ্ছিক)",
       // ---- Content (auto-generated) ----
       "s1.kicker": "ওয়ার্কশপ উপস্থাপনা",
-      "s1.sub": "অনিশ্চিত সময়ে অনুপ্রেরণা, অর্থ ও ভবিষ্যৎ আত্মবিশ্বাস পুনর্গঠন",
+      "s1.sub": "অনিশ্চিত সময়ে <span class=\"word-accent word-amber\">অনুপ্রেরণা</span>, <span class=\"word-accent word-teal\">অর্থ</span> ও <span class=\"word-accent word-blue\">ভবিষ্যৎ আত্মবিশ্বাস</span> <span class=\"hero-sub-muted\">পুনর্গঠন</span>",
       "s1.metak.duration": "সময়কাল",
       "s1.metav.duration": "৩ ঘণ্টা",
       "s1.metak.format": "ধরন",
