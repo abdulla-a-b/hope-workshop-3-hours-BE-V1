@@ -4108,3 +4108,157 @@ html[lang="bn"] [data-i18n] {
   background: radial-gradient(ellipse at center, transparent 45%, rgba(220,210,190,.5) 100%);
 }
 [data-theme="light"] .slide-title .hero-title { text-shadow: 0 0 30px rgba(123,140,245,.12); }
+
+/* ============================================================================
+   ╔══════════════════════════════════════════════════════════════════════╗
+   ║  SLIDE 3 — "WHAT HAPPENS WHEN EMPLOYEES LOSE HOPE?" (cinematic Q)    ║
+   ║  Coral-tinted variant of cinematic slide                              ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   ============================================================================ */
+.slide-cinematic.tone-problem {
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(245,123,140,.10), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 80% 80%, rgba(245,185,123,.06), transparent 60%),
+    radial-gradient(ellipse at center, #14101a 0%, #08060c 100%);
+}
+.slide-cinematic.tone-problem .cin-kicker { color: rgba(245,123,140,.85); }
+.slide-cinematic.tone-problem .cin-kicker::before {
+  background: linear-gradient(to right, transparent, #f57b8c);
+}
+.slide-cinematic.tone-problem .cin-headline .accent {
+  background: linear-gradient(135deg, #f57b8c 0%, #f5b97b 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.slide-cinematic .q-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(245,123,140,.25);
+  backdrop-filter: blur(8px);
+}
+.slide-cinematic .q-card label.q-question { color: rgba(255,255,255,.85); }
+.slide-cinematic .q-card textarea {
+  background: rgba(0,0,0,.3);
+  border: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+}
+.slide-cinematic .q-card textarea:focus {
+  border-color: rgba(245,123,140,.5);
+  box-shadow: 0 0 0 3px rgba(245,123,140,.12);
+}
+
+/* ============================================================================
+   ╔══════════════════════════════════════════════════════════════════════╗
+   ║  SLIDE 4 — "THE STRUGGLE" (lucrative color-grid)                     ║
+   ║  Five selectable cards, each with its own gradient & glow            ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   ============================================================================ */
+.struggle-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin: 26px 0 28px;
+}
+@media (max-width: 980px) { .struggle-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 620px) { .struggle-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.struggle-card {
+  position: relative;
+  padding: 28px 14px 22px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #fff;
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform .3s cubic-bezier(.16,.84,.44,1),
+              border-color .25s, box-shadow .3s, background .25s;
+  isolation: isolate;
+}
+.struggle-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--struggle-gradient);
+  opacity: 0; transition: opacity .3s;
+}
+.struggle-card::after {
+  content: ""; position: absolute; inset: -1px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--struggle-color), transparent 65%);
+  opacity: 0; z-index: -2;
+  transition: opacity .35s;
+  filter: blur(18px);
+}
+.struggle-card:nth-child(1) { --struggle-color: #7b8cf5; --struggle-gradient: linear-gradient(160deg, rgba(123,140,245,.28), rgba(123,140,245,.04)); }
+.struggle-card:nth-child(2) { --struggle-color: #f5b97b; --struggle-gradient: linear-gradient(160deg, rgba(245,185,123,.28), rgba(245,185,123,.04)); }
+.struggle-card:nth-child(3) { --struggle-color: #f57b8c; --struggle-gradient: linear-gradient(160deg, rgba(245,123,140,.28), rgba(245,123,140,.04)); }
+.struggle-card:nth-child(4) { --struggle-color: #6dd5c5; --struggle-gradient: linear-gradient(160deg, rgba(109,213,197,.28), rgba(109,213,197,.04)); }
+.struggle-card:nth-child(5) { --struggle-color: #c79bf5; --struggle-gradient: linear-gradient(160deg, rgba(199,155,245,.28), rgba(199,155,245,.04)); }
+
+.struggle-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--struggle-color);
+}
+.struggle-card:hover::before { opacity: .6; }
+.struggle-card:hover::after  { opacity: .5; }
+
+.struggle-card.selected {
+  transform: translateY(-3px);
+  border-color: var(--struggle-color);
+  box-shadow: 0 0 0 2px var(--struggle-color),
+              0 14px 32px -10px var(--struggle-color);
+}
+.struggle-card.selected::before { opacity: 1; }
+.struggle-card.selected::after  { opacity: .7; }
+.struggle-card.selected .struggle-check {
+  opacity: 1; transform: scale(1);
+}
+
+.struggle-icon {
+  font-size: 38px; line-height: 1;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.25));
+}
+.struggle-name {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: -.005em;
+  line-height: 1.25;
+}
+.struggle-check {
+  position: absolute; top: 10px; right: 12px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--struggle-color);
+  color: #0a0e1a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+  opacity: 0; transform: scale(.6);
+  transition: opacity .2s, transform .25s cubic-bezier(.16,.84,.44,1);
+}
+
+.struggle-question {
+  margin-top: 8px;
+  padding: 22px 26px;
+  background: linear-gradient(135deg, rgba(245,123,140,.08), rgba(245,185,123,.04));
+  border-left: 4px solid #f57b8c;
+  border-radius: 10px;
+}
+.struggle-question h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 22px;
+  color: #fff;
+  margin: 0 0 6px;
+  letter-spacing: -.005em;
+}
+.struggle-question p {
+  font-size: 13.5px;
+  color: rgba(255,255,255,.6);
+  margin: 0;
+  font-style: italic;
+}
+[data-theme="light"] .struggle-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.08); }
+[data-theme="light"] .struggle-card .struggle-name { color: #0a0e1a; }
+[data-theme="light"] .struggle-question h3 { color: #0a0e1a; }
