@@ -4262,3 +4262,162 @@ html[lang="bn"] [data-i18n] {
 [data-theme="light"] .struggle-card { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.08); }
 [data-theme="light"] .struggle-card .struggle-name { color: #0a0e1a; }
 [data-theme="light"] .struggle-question h3 { color: #0a0e1a; }
+
+/* ============================================================================
+   ╔══════════════════════════════════════════════════════════════════════╗
+   ║  SLIDE 3 — LIVE "VOICES FROM THE ROOM" WALL                          ║
+   ║  Share button + animated pill grid, polled via JSONP                 ║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   ============================================================================ */
+.share-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 20px 10px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f57b8c 0%, #f5b97b 100%);
+  border: none;
+  color: #1a0e10;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -.005em;
+  cursor: pointer;
+  transition: transform .18s cubic-bezier(.16,.84,.44,1), box-shadow .25s, filter .2s;
+  box-shadow: 0 6px 18px -4px rgba(245,123,140,.45);
+}
+.btn-share svg { stroke: currentColor; transition: transform .25s ease; }
+.btn-share:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 28px -6px rgba(245,123,140,.55);
+}
+.btn-share:hover svg { transform: translate(2px, -2px) rotate(8deg); }
+.btn-share:disabled {
+  opacity: .55; cursor: not-allowed; transform: none;
+  filter: grayscale(.3);
+}
+.btn-share.sharing svg { animation: shareFly .8s ease forwards; }
+@keyframes shareFly {
+  from { transform: translate(0,0) rotate(0); opacity: 1; }
+  to   { transform: translate(30px,-26px) rotate(35deg); opacity: 0; }
+}
+
+.voices-wall {
+  margin-top: 22px;
+  padding: 22px 24px 26px;
+  background: linear-gradient(160deg, rgba(245,123,140,.05), rgba(255,255,255,.015));
+  border: 1px solid rgba(245,123,140,.18);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+.voices-wall::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,123,140,.4), transparent);
+}
+.voices-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 16px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+}
+.voices-live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #f57b8c;
+  box-shadow: 0 0 0 0 rgba(245,123,140,.7);
+  animation: voicesPulse 1.8s ease-in-out infinite;
+}
+@keyframes voicesPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(245,123,140,.75); transform: scale(1); }
+  70%  { box-shadow: 0 0 0 10px rgba(245,123,140,0); transform: scale(1.15); }
+  100% { box-shadow: 0 0 0 0 rgba(245,123,140,0); transform: scale(1); }
+}
+.voices-count {
+  margin-left: auto;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(245,123,140,.15);
+  border: 1px solid rgba(245,123,140,.3);
+  color: #f5b97b;
+  letter-spacing: 0;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.voices-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 10px;
+  min-height: 48px;
+  align-content: flex-start;
+  align-items: flex-start;
+}
+.voices-empty {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(255,255,255,.4);
+  padding: 6px 2px;
+  width: 100%;
+}
+
+.voice-pill {
+  display: inline-block;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  color: var(--pill-text, #fff);
+  max-width: 100%;
+  word-break: break-word;
+  position: relative;
+  animation: voiceIn .6s cubic-bezier(.16,.84,.44,1) var(--enter-delay, 0s) both;
+}
+.voice-pill::after {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 0 var(--pill-glow, transparent);
+  animation: voiceGlow 1.4s ease-out var(--enter-delay, 0s) both;
+}
+.voice-color-0 { --pill-bg: linear-gradient(135deg, rgba(123,140,245,.22), rgba(123,140,245,.06)); --pill-border: rgba(123,140,245,.45); --pill-text: #d4daff; --pill-glow: rgba(123,140,245,.5); }
+.voice-color-1 { --pill-bg: linear-gradient(135deg, rgba(109,213,197,.22), rgba(109,213,197,.06)); --pill-border: rgba(109,213,197,.45); --pill-text: #c5efe7; --pill-glow: rgba(109,213,197,.5); }
+.voice-color-2 { --pill-bg: linear-gradient(135deg, rgba(245,185,123,.22), rgba(245,185,123,.06)); --pill-border: rgba(245,185,123,.45); --pill-text: #f8dcb3; --pill-glow: rgba(245,185,123,.5); }
+.voice-color-3 { --pill-bg: linear-gradient(135deg, rgba(245,123,140,.22), rgba(245,123,140,.06)); --pill-border: rgba(245,123,140,.45); --pill-text: #f8c4ce; --pill-glow: rgba(245,123,140,.5); }
+.voice-color-4 { --pill-bg: linear-gradient(135deg, rgba(163,217,119,.22), rgba(163,217,119,.06)); --pill-border: rgba(163,217,119,.45); --pill-text: #d6edb7; --pill-glow: rgba(163,217,119,.5); }
+.voice-color-5 { --pill-bg: linear-gradient(135deg, rgba(199,155,245,.22), rgba(199,155,245,.06)); --pill-border: rgba(199,155,245,.45); --pill-text: #e2cdfa; --pill-glow: rgba(199,155,245,.5); }
+
+@keyframes voiceIn {
+  from { opacity: 0; transform: translateY(12px) scale(.85); filter: blur(3px); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+@keyframes voiceGlow {
+  0%   { box-shadow: 0 0 0 0 var(--pill-glow); }
+  100% { box-shadow: 0 0 0 14px transparent; }
+}
+
+[data-theme="light"] .voices-wall { background: linear-gradient(160deg, rgba(245,123,140,.06), rgba(0,0,0,.02)); }
+[data-theme="light"] .voices-header { color: rgba(10,14,26,.65); }
+[data-theme="light"] .voices-empty { color: rgba(10,14,26,.45); }
+[data-theme="light"] .voice-pill { color: rgba(10,14,26,.9) !important; }
+
+@media (max-width: 640px) {
+  .share-row { justify-content: stretch; }
+  .btn-share { width: 100%; justify-content: center; }
+}
