@@ -739,7 +739,153 @@
   surveyChipInputs.forEach((c) => c.addEventListener("change", syncSurveyTopics));
 
 
-  // ─── Slide 4: "The Struggle" — multi-select cards ───────────────────────
+  // ─── Slide 3: "Voices from the room" — LIVE WALL ───────────────────────
+  // Participants tap "Share with the room" → POST goes to the Apps Script,
+  // which appends a row to a separate "Live_Responses" tab. While slide 3 is
+  // visible, the page polls (JSONP) every 8s and renders new entries as
+  // colored pills with a smooth entrance animation. CORS is sidestepped on
+  // POST via no-cors mode, and on GET via JSONP (script-tag injection).
+  const shareBtn  = document.getElementById("shareLoseHopeBtn");
+  const voicesWall = document.getElementById("voicesWall");
+  const voicesGrid = document.getElementById("voicesGrid");
+  const voicesCount = document.getElementById("voicesCount");
+  const voicesField = voicesWall ? voicesWall.getAttribute("data-field") : "";
+  let voicesPollTimer = null;
+  let voicesSeen = new Set();   // dedupe by timestamp+text
+  let voicesColorCursor = 0;    // rotates through the 6 pill colors
+
+  function voicesShareTextarea() {
+    return document.getElementById("lose_hope_answer");
+  }
+
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      const ta = voicesShareTextarea();
+      const text = (ta && ta.value || "").trim();
+      if (!text) { toast("Write something first to share", "error"); return; }
+      const cfg = window.HOPE_CONFIG || {};
+      if (!cfg.GOOGLE_SCRIPT_URL) {
+        toast("Backend isn't connected — ask the facilitator", "error");
+        return;
+      }
+      shareBtn.disabled = true;
+      shareBtn.classList.add("sharing");
+      const payload = {
+        action: "share_response",
+        field: voicesField,
+        text: text,
+        batch_name: (typeof getRememberedBatch === "function") ? getRememberedBatch() : "",
+        workshop_id: cfg.WORKSHOP_ID || ""
+      };
+      try {
+        await fetch(cfg.GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          cache: "no-cache",
+          redirect: "follow",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        toast("Shared with the room", "success");
+        // Optimistic local render so the participant sees their own voice instantly
+        renderVoices([{ timestamp: new Date().toISOString(), text: text }], /*optimistic*/ true);
+        // Trigger a server re-fetch so others' words land on this device too
+        setTimeout(pollVoices, 1200);
+      } catch (err) {
+        toast("Could not share — try again", "error");
+      } finally {
+        setTimeout(() => {
+          shareBtn.disabled = false;
+          shareBtn.classList.remove("sharing");
+        }, 2500);
+      }
+    });
+  }
+
+  function pollVoices() {
+    if (!voicesGrid) return;
+    const cfg = window.HOPE_CONFIG || {};
+    if (!cfg.GOOGLE_SCRIPT_URL) return;
+    const cbName = "__voicesCb_" + Date.now() + "_" + Math.floor(Math.random() * 1e5);
+    const script = document.createElement("script");
+    let done = false;
+    const cleanup = () => {
+      if (script.parentNode) script.parentNode.removeChild(script);
+      try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+    };
+    const timeout = setTimeout(() => { if (done) return; done = true; cleanup(); }, 10000);
+    window[cbName] = (data) => {
+      if (done) return; done = true; clearTimeout(timeout); cleanup();
+      if (data && data.ok && Array.isArray(data.responses)) {
+        renderVoices(data.responses);
+      }
+    };
+    script.onerror = () => { if (done) return; done = true; clearTimeout(timeout); cleanup(); };
+    const batchName = (typeof getRememberedBatch === "function") ? getRememberedBatch() : "";
+    script.src = cfg.GOOGLE_SCRIPT_URL +
+      "?action=get_responses&field=" + encodeURIComponent(voicesField) +
+      "&callback=" + cbName +
+      (batchName ? "&batch_name=" + encodeURIComponent(batchName) : "") +
+      "&_=" + Date.now(); // bust caches
+    document.body.appendChild(script);
+  }
+
+  function renderVoices(responses, optimistic) {
+    if (!voicesGrid) return;
+    // Filter out ones we've already shown
+    const fresh = responses.filter(r => {
+      const key = (r.timestamp || "") + "|" + (r.text || "");
+      if (voicesSeen.has(key)) return false;
+      voicesSeen.add(key);
+      return true;
+    });
+    if (!fresh.length) return;
+    // Remove the "empty" placeholder once anything arrives
+    const empty = voicesGrid.querySelector(".voices-empty");
+    if (empty) empty.remove();
+    const fragment = document.createDocumentFragment();
+    fresh.forEach((r, idx) => {
+      const pill = document.createElement("div");
+      pill.className = "voice-pill voice-color-" + (voicesColorCursor++ % 6);
+      pill.textContent = r.text;
+      pill.style.setProperty("--enter-delay", (idx * 0.06) + "s");
+      fragment.appendChild(pill);
+    });
+    // Newest pills appear at the top
+    voicesGrid.insertBefore(fragment, voicesGrid.firstChild);
+    if (voicesCount) voicesCount.textContent = String(voicesSeen.size);
+  }
+
+  function isVoicesSlideActive() {
+    if (!voicesWall) return false;
+    const slide = voicesWall.closest(".slide");
+    return !!(slide && slide.classList.contains("active"));
+  }
+
+  function startVoicesPolling() {
+    if (voicesPollTimer || !voicesWall) return;
+    pollVoices(); // immediate fetch
+    voicesPollTimer = setInterval(pollVoices, 8000);
+  }
+  function stopVoicesPolling() {
+    if (voicesPollTimer) { clearInterval(voicesPollTimer); voicesPollTimer = null; }
+  }
+
+  // Watch the .active class on the slide; start polling only while visible.
+  if (voicesWall) {
+    const slideEl = voicesWall.closest(".slide");
+    if (slideEl) {
+      const obs = new MutationObserver(() => {
+        if (isVoicesSlideActive()) startVoicesPolling();
+        else stopVoicesPolling();
+      });
+      obs.observe(slideEl, { attributes: true, attributeFilter: ["class"] });
+      // Also check on load — if slide 3 happens to be the active one already
+      if (isVoicesSlideActive()) startVoicesPolling();
+    }
+  }
+
+
   // Tapping a card toggles its selected state. Selected values save to the
   // hidden field which submits with the rest of the responses.
   const struggleGrid = document.getElementById("struggleGrid");
@@ -1304,6 +1450,9 @@
       "prob.sub": "Take 60 seconds. Write what you've seen — one phrase or several, separated by commas.",
       "prob.label": "Your observations",
       "prob.ph": "e.g. People stop volunteering ideas, sick leave rises, the best ones quietly leave…",
+      "prob.share": "Share with the room",
+      "prob.voices": "Voices from the room",
+      "prob.empty": "As people share, their words will appear here — live.",
       "strug.kicker": "Act I · The Struggle",
       "strug.title": "The Struggle",
       "strug.lede": "These are the storms that quietly drain hope from workplaces. Tap any that you've experienced — your selections save with your responses.",
@@ -1752,6 +1901,9 @@
       "prob.sub": "৬০ সেকেন্ড নিন। যা দেখেছেন তা লিখুন—একটি বাক্য বা একাধিক, কমা দিয়ে আলাদা করে।",
       "prob.label": "আপনার পর্যবেক্ষণ",
       "prob.ph": "যেমন: মানুষ নতুন আইডিয়া দেওয়া বন্ধ করে, অসুস্থতাজনিত ছুটি বাড়ে, ভালো কর্মীরা চুপচাপ চলে যায়…",
+      "prob.share": "সবার সাথে শেয়ার করুন",
+      "prob.voices": "ঘরের সকলের কণ্ঠস্বর",
+      "prob.empty": "মানুষ শেয়ার করলে তাদের কথাগুলো এখানে—লাইভ—দেখা যাবে।",
       "strug.kicker": "অঙ্ক ১ · সংগ্রাম",
       "strug.title": "সংগ্রাম",
       "strug.lede": "এগুলোই সেই ঝড়, যা নীরবে কর্মক্ষেত্র থেকে আশা শুষে নেয়। যা যা অনুভব করেছেন তাতে চাপুন—আপনার নির্বাচন আপনার উত্তরের সাথে সংরক্ষিত হবে।",
