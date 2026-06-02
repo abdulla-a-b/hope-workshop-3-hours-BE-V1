@@ -4620,3 +4620,56 @@ html[lang="bn"] [data-i18n] {
   .hopexp-chip { padding: 6px 11px 6px 10px; font-size: 11px; }
   .hopexp-rank { font-size: 11.5px; }
 }
+
+/* ============================================================================
+   ╔══════════════════════════════════════════════════════════════════════╗
+   ║  CHARACTER COUNTERS  —  live "12 / 280 · ✦ +10 XP" feedback           ║
+   ║  States: empty (muted) · too-short (red) · ok (green) · near-max amber║
+   ╚══════════════════════════════════════════════════════════════════════╝
+   ============================================================================ */
+.char-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;          /* push right inside .q-meta / .share-row */
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.55);
+  transition: color .25s ease;
+  white-space: nowrap;
+}
+.char-counter .cc-slash,
+.char-counter .cc-max  { opacity: .6; }
+.char-counter .cc-xp   {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(245,185,123,.12);
+  border: 1px solid rgba(245,185,123,.28);
+  color: #f5b97b;
+  font-weight: 600;
+  font-size: 10px;
+}
+/* State colors */
+.char-counter.cc-empty .cc-num     { color: rgba(255,255,255,.4); }
+.char-counter.cc-too-short         { color: #f57b8c; }
+.char-counter.cc-too-short .cc-num { color: #f57b8c; font-weight: 700; }
+.char-counter.cc-ok                { color: #6dd5c5; }
+.char-counter.cc-ok .cc-num        { color: #6dd5c5; font-weight: 700; }
+.char-counter.cc-near-max          { color: #f5b97b; }
+.char-counter.cc-near-max .cc-num  { color: #f5b97b; font-weight: 700; }
+
+/* When the counter has to sit outside a .q-meta row (no flex parent), block it */
+textarea + .char-counter,
+input  + .char-counter {
+  display: flex; justify-content: flex-end;
+  margin: 6px 0 0;
+}
+
+[data-theme="light"] .char-counter { color: rgba(10,14,26,.55); }
+[data-theme="light"] .char-counter .cc-xp {
+  background: rgba(245,185,123,.18);
+  border-color: rgba(245,185,123,.4);
+  color: #a85a14;
+}
