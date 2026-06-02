@@ -2435,25 +2435,25 @@
   ${journeyPanelSVG}
 
   <!-- Bottom meta row -->
-  <g transform="translate(0,950)">
+  <g transform="translate(0,920)">
     <line x1="120" y1="0" x2="1480" y2="0" stroke="#0a0e1a" stroke-width="0.6" opacity="0.18"/>
   </g>
 
-  <g transform="translate(140,998)">
+  <g transform="translate(140,946)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">DATE OF COMPLETION</text>
-    <text y="28" font-family="Fraunces, serif" font-size="22" font-weight="500" fill="#0a0e1a">${escapeXml(dateLong)}</text>
+    <text y="26" font-family="Fraunces, serif" font-size="20" font-weight="500" fill="#0a0e1a">${escapeXml(dateLong)}</text>
   </g>
-  <g transform="translate(560,998)">
+  <g transform="translate(560,946)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">CERTIFICATE ID</text>
-    <text y="28" font-family="JetBrains Mono, monospace" font-size="20" font-weight="500" fill="#0a0e1a">${escapeXml(certId)}</text>
+    <text y="26" font-family="JetBrains Mono, monospace" font-size="18" font-weight="500" fill="#0a0e1a">${escapeXml(certId)}</text>
   </g>
-  <g transform="translate(940,998)">
+  <g transform="translate(940,946)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">HOPE KPI INDEX</text>
-    <text y="28" font-family="Fraunces, serif" font-size="22" font-weight="500" fill="#0a0e1a">${escapeXml(String(hki))}<tspan font-size="14" opacity="0.5"> / 10</tspan></text>
+    <text y="26" font-family="Fraunces, serif" font-size="20" font-weight="500" fill="#0a0e1a">${escapeXml(String(hki))}<tspan font-size="13" opacity="0.5"> / 10</tspan></text>
   </g>
 
-  <!-- Circular seal (bottom right) -->
-  <g transform="translate(1380,1010)">
+  <!-- Circular seal (bottom right) - positioned to fit within inner frame -->
+  <g transform="translate(1380,970)">
     <circle r="86" fill="url(#sealRim)" opacity="0.95"/>
     <circle r="80" fill="url(#seal)"/>
     <circle r="80" fill="none" stroke="#f5b97b" stroke-width="1" opacity="0.4"/>
@@ -2469,12 +2469,12 @@
     </text>
   </g>
 
-  <!-- Issuer footer -->
-  <g transform="translate(140,1090)">
+  <!-- Issuer footer - sits within inner frame (frame inner bottom is y=1075) -->
+  <g transform="translate(140,1008)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">ISSUED BY</text>
-    <text y="22" font-family="Fraunces, serif" font-weight="600" font-size="18" fill="#0a0e1a">${escapeXml(issuer)} <tspan font-family="JetBrains Mono, monospace" font-size="11" fill="#0a0e1a" opacity="0.5" dx="8">${escapeXml(issuerUrl)}</tspan></text>
+    <text y="22" font-family="Fraunces, serif" font-weight="600" font-size="17" fill="#0a0e1a">${escapeXml(issuer)} <tspan font-family="JetBrains Mono, monospace" font-size="10" fill="#0a0e1a" opacity="0.5" dx="8">${escapeXml(issuerUrl)}</tspan></text>
   </g>
-  ${issuerTagline ? `<text x="140" y="1100" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.1em" fill="#0a0e1a" opacity="0.4">${escapeXml(issuerTagline)}</text>` : ""}
+  ${issuerTagline ? `<text x="140" y="1056" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.1em" fill="#0a0e1a" opacity="0.4">${escapeXml(issuerTagline)}</text>` : ""}
 </svg>`;
   }
 
