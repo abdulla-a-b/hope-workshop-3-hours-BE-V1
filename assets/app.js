@@ -395,6 +395,34 @@
       return;
     }
 
+    // ── Generate the certificate PNG ahead of POST so Apps Script can
+    //    attach it directly to the participant's confirmation email.
+    //    No fragile GitHub Pages links — the cert lives in their inbox.
+    try {
+      if (typeof window.__hopeBuildCertSVG === "function") {
+        const certOpts = {
+          name: participantName,
+          org: data.participant_org || "",
+          dateLong: new Date().toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" }),
+          certId: certId,
+          hki: parseFloat(hki),
+          issuer: config.ISSUER_NAME || "ProfessionalsTalk",
+          issuerUrl: config.ISSUER_URL || "https://professionalstalk.me",
+          issuerTagline: config.ISSUER_TAGLINE || "",
+          verifyUrl: ""
+        };
+        const svgStr = window.__hopeBuildCertSVG(certOpts);
+        const pngBase64 = await window.__hopeSvgToPngBase64(svgStr, 2);
+        if (pngBase64) {
+          payload.cert_png_base64 = pngBase64;
+        }
+      }
+    } catch (renderErr) {
+      // If PNG generation fails, submission still proceeds; participant just
+      // won't get the attached cert (email still arrives without attachment).
+      console.warn("Cert PNG pre-render failed:", renderErr);
+    }
+
     try {
       // Google Apps Script doesn't return CORS headers, so we use "no-cors":
       // the POST is delivered and the row is written, but the response is
@@ -2668,6 +2696,40 @@
       catch (err) { console.error(err); toast("Could not generate PDF: " + err.message, "error"); }
     });
   }
+
+  // Expose the SVG builder + a PNG converter so the submit flow can
+  // pre-render the certificate and attach it as a PNG to the participant's
+  // email. (Apps Script can't render SVGs server-side, so we do it client-side
+  // before submission and send the base64 PNG along with the form payload.)
+  window.__hopeBuildCertSVG = buildCertificateSVG;
+  window.__hopeSvgToPngBase64 = function (svgString, scale) {
+    return new Promise(function (resolve) {
+      var s = scale || 2;
+      var W = 1600 * s, H = 1131 * s;
+      var canvas = document.createElement("canvas");
+      canvas.width = W; canvas.height = H;
+      var ctx = canvas.getContext("2d");
+      var img = new Image();
+      // Encode SVG as a data URL so the image loads cross-origin-safely.
+      // (Using a Blob URL works in most browsers but a data URL is the most
+      // reliable path for toDataURL() afterwards — no tainted canvas risk.)
+      var encoded = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgString);
+      var timeout = setTimeout(function () { resolve(""); }, 8000);
+      img.onload = function () {
+        clearTimeout(timeout);
+        try {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, W, H);
+          ctx.drawImage(img, 0, 0, W, H);
+          var dataUrl = canvas.toDataURL("image/png");
+          var base64 = dataUrl.split(",")[1] || "";
+          resolve(base64);
+        } catch (e) { resolve(""); }
+      };
+      img.onerror = function () { clearTimeout(timeout); resolve(""); };
+      img.src = encoded;
+    });
+  };
 
   // Hook: when submission succeeds, render certificate and advance
   // We instrument by listening for the submit status text change as a fallback,
