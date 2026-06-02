@@ -1485,6 +1485,10 @@
       "xp.badge.architect.n": "Architect of Hope",
       "xp.badge.architect.d": "Completed the workshop and submitted your plan.",
 
+      "cert.journey": "Your Hope Journey",
+      "cert.earned": "Earned",
+      "cert.reached": "Reached",
+
     },
     bn: {
       "brand": "HOPE ওয়ার্কশপ",
@@ -1958,6 +1962,10 @@
       "xp.badge.architect.n": "আশার স্থপতি",
       "xp.badge.architect.d": "কর্মশালা সম্পন্ন করেছেন এবং আপনার পরিকল্পনা জমা দিয়েছেন।",
 
+      "cert.journey": "আপনার আশার যাত্রা",
+      "cert.earned": "অর্জিত",
+      "cert.reached": "পৌঁছেছেন",
+
     },
   };
 
@@ -2242,6 +2250,53 @@
   }
 
   function buildCertificateSVG(opts) {
+    // ── Compute the "Hope Journey" panel from saved HopeXP state ──
+    let __xpVal = 0, __rankIdx = 0;
+    try {
+      const raw = localStorage.getItem("hope_xp_v1");
+      if (raw) { const st = JSON.parse(raw); __xpVal = Math.max(0, parseInt(st.xp || 0, 10)); }
+    } catch (e) {}
+    const __ranks = [
+      { min:0,   name:"Novice",            color:"#7b8cf5" },
+      { min:25,  name:"Explorer",          color:"#6dd5c5" },
+      { min:70,  name:"Builder",           color:"#a3d977" },
+      { min:140, name:"Strategist",        color:"#f5b97b" },
+      { min:220, name:"Architect of Hope", color:"#f57b8c" }
+    ];
+    for (let i = 0; i < __ranks.length; i++) {
+      if (__xpVal >= __ranks[i].min) __rankIdx = i;
+    }
+    // Build the panel: centered at SVG x=800, y=870. 5 dots evenly spaced.
+    const __positions = [-340, -170, 0, 170, 340];
+    const __dotsSvg = __ranks.map((r, i) => {
+      const x = __positions[i];
+      const achieved = i <= __rankIdx;
+      const ringStroke = achieved ? r.color : "#0a0e1a";
+      const ringOp     = achieved ? 1 : 0.18;
+      const fillColor  = achieved ? r.color : "#ffffff";
+      const fillOp     = achieved ? 1 : 1;
+      const labelOp    = achieved ? 1 : 0.4;
+      const labelWeight = (i === __rankIdx) ? 700 : 500;
+      const goldRing = (i === __rankIdx)
+        ? `<circle cx="${x}" cy="0" r="14" fill="none" stroke="#f5b97b" stroke-width="1.5" opacity="0.85"/>
+           <circle cx="${x}" cy="0" r="18" fill="none" stroke="#f5b97b" stroke-width="0.6" opacity="0.4" stroke-dasharray="2,2"/>`
+        : "";
+      return `
+        ${goldRing}
+        <circle cx="${x}" cy="0" r="9" fill="${fillColor}" fill-opacity="${fillOp}" stroke="${ringStroke}" stroke-width="2" opacity="${achieved ? 1 : 0.5}"/>
+        ${achieved && i < __rankIdx ? `<text x="${x}" y="3.5" text-anchor="middle" font-size="9" font-weight="700" fill="#ffffff">✓</text>` : ""}
+        <text x="${x}" y="28" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="0.10em" fill="#0a0e1a" opacity="${labelOp}" font-weight="${labelWeight}">${r.name.toUpperCase()}</text>
+      `;
+    }).join("");
+    const __activeRankName = __ranks[__rankIdx].name;
+    const journeyPanelSVG = `
+  <g transform="translate(800, 858)">
+    <text x="0" y="-22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.32em" fill="#0a0e1a" opacity="0.4">YOUR HOPE JOURNEY</text>
+    <line x1="-340" y1="0" x2="340" y2="0" stroke="#0a0e1a" stroke-width="1" opacity="0.18"/>
+    ${__dotsSvg}
+    <text x="0" y="44" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="13" fill="#0a0e1a"><tspan opacity="0.7">Earned\u00a0</tspan><tspan font-weight="600" font-style="normal" opacity="1">${__xpVal}\u00a0XP</tspan><tspan opacity="0.45">\u00a0\u00a0\u2014\u00a0\u00a0</tspan><tspan opacity="0.7">Reached\u00a0</tspan><tspan font-weight="600" font-style="normal" opacity="1">${__activeRankName}</tspan></text>
+  </g>`;
+
     const name = (opts.name && opts.name.trim()) || "Participant";
     const date = opts.date || new Date();
     const certId = opts.certId || buildCertId(name);
@@ -2376,26 +2431,29 @@
     </g>
   </g>
 
+  <!-- Your Hope Journey — 5-rank progression ladder -->
+  ${journeyPanelSVG}
+
   <!-- Bottom meta row -->
-  <g transform="translate(0,920)">
+  <g transform="translate(0,950)">
     <line x1="120" y1="0" x2="1480" y2="0" stroke="#0a0e1a" stroke-width="0.6" opacity="0.18"/>
   </g>
 
-  <g transform="translate(140,968)">
+  <g transform="translate(140,998)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">DATE OF COMPLETION</text>
     <text y="28" font-family="Fraunces, serif" font-size="22" font-weight="500" fill="#0a0e1a">${escapeXml(dateLong)}</text>
   </g>
-  <g transform="translate(560,968)">
+  <g transform="translate(560,998)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">CERTIFICATE ID</text>
     <text y="28" font-family="JetBrains Mono, monospace" font-size="20" font-weight="500" fill="#0a0e1a">${escapeXml(certId)}</text>
   </g>
-  <g transform="translate(940,968)">
+  <g transform="translate(940,998)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">HOPE KPI INDEX</text>
     <text y="28" font-family="Fraunces, serif" font-size="22" font-weight="500" fill="#0a0e1a">${escapeXml(String(hki))}<tspan font-size="14" opacity="0.5"> / 10</tspan></text>
   </g>
 
   <!-- Circular seal (bottom right) -->
-  <g transform="translate(1380,990)">
+  <g transform="translate(1380,1010)">
     <circle r="86" fill="url(#sealRim)" opacity="0.95"/>
     <circle r="80" fill="url(#seal)"/>
     <circle r="80" fill="none" stroke="#f5b97b" stroke-width="1" opacity="0.4"/>
@@ -2412,7 +2470,7 @@
   </g>
 
   <!-- Issuer footer -->
-  <g transform="translate(140,1060)">
+  <g transform="translate(140,1090)">
     <text font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.16em" fill="#0a0e1a" opacity="0.5">ISSUED BY</text>
     <text y="22" font-family="Fraunces, serif" font-weight="600" font-size="18" fill="#0a0e1a">${escapeXml(issuer)} <tspan font-family="JetBrains Mono, monospace" font-size="11" fill="#0a0e1a" opacity="0.5" dx="8">${escapeXml(issuerUrl)}</tspan></text>
   </g>
@@ -2885,6 +2943,51 @@
     "background: #7b8cf5; color: white; font-weight: bold; padding: 4px 8px; border-radius: 4px;",
     "v" + (window.HOPE_CONFIG?.VERSION || "1.0.0")
   );
+
+  // ═══════════════════════════════════════════════════════════════════════
+  //  CHARACTER COUNTERS — live "12 / 280" with min/max validation states
+  //  Attached to every [data-min][data-max] input/textarea on the eight
+  //  fill-in slides (3, 8, 11, 17, 27, 28, 29, 34). Color states tell the
+  //  participant whether their answer is too short, healthy, or near max.
+  // ═══════════════════════════════════════════════════════════════════════
+  (function installCharCounters() {
+    const fields = document.querySelectorAll('[data-min][data-max]');
+    fields.forEach(el => {
+      const min = parseInt(el.getAttribute("data-min") || "7", 10);
+      const max = parseInt(el.getAttribute("data-max") || "280", 10);
+      const xp  = parseInt(el.getAttribute("data-xp")  || "10", 10);
+
+      // Create counter element AFTER the field. If field is inside .q-card,
+      // place the counter in (or alongside) the existing .q-meta row when present.
+      const counter = document.createElement("span");
+      counter.className = "char-counter";
+      counter.setAttribute("data-for", el.id);
+      counter.innerHTML = '<span class="cc-num">0</span><span class="cc-slash"> / </span><span class="cc-max">' + max + '</span><span class="cc-xp" title="XP awarded when valid"> · ✦ +' + xp + ' XP</span>';
+
+      // Prefer placing inside an existing q-meta or save-state row
+      const qMeta = (el.parentElement || document).querySelector(".q-meta, .share-row");
+      if (qMeta) {
+        qMeta.appendChild(counter);
+      } else {
+        el.insertAdjacentElement("afterend", counter);
+      }
+
+      function update() {
+        const len = (el.value || "").trim().length;
+        const numEl = counter.querySelector(".cc-num");
+        if (numEl) numEl.textContent = String(len);
+        counter.classList.remove("cc-too-short", "cc-ok", "cc-near-max", "cc-empty");
+        if (len === 0) counter.classList.add("cc-empty");
+        else if (len < min) counter.classList.add("cc-too-short");
+        else if (len > max - 20) counter.classList.add("cc-near-max");
+        else counter.classList.add("cc-ok");
+      }
+      el.addEventListener("input", update);
+      el.addEventListener("blur",  update);
+      update(); // initial state
+    });
+  })();
+
   // ═══════════════════════════════════════════════════════════════════════
   //  HopeXP GAMIFICATION LAYER
   //  Live positive-reinforcement system that fires while participants work.
@@ -3053,11 +3156,17 @@
 
     // ── Wire XP triggers to existing elements ──
     function wireTriggers() {
-      // 1) Textareas: first time content lands & blurs → +10 XP, one-time per field
-      document.querySelectorAll('textarea[data-key]').forEach(ta => {
-        ta.addEventListener("blur", () => {
-          if ((ta.value || "").trim().length >= 8) {
-            award(10, ta, "ta_" + ta.id);
+      // 1) Fill-in fields (textarea + text inputs): award XP on blur ONLY when
+      //    content length is in valid range (data-min ≤ len ≤ data-max). Each
+      //    field reads its own data-xp value so XP is properly distributed.
+      document.querySelectorAll('textarea[data-key], input[data-key][data-min]').forEach(el => {
+        el.addEventListener("blur", () => {
+          const len = (el.value || "").trim().length;
+          const min = parseInt(el.getAttribute("data-min") || "7", 10);
+          const max = parseInt(el.getAttribute("data-max") || "280", 10);
+          const xp  = parseInt(el.getAttribute("data-xp")  || "10", 10);
+          if (len >= min && len <= max) {
+            award(xp, el, "field_" + el.id);
           }
         });
       });
